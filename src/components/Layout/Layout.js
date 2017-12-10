@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import cssClasses from './Layout.css';
+
 import Auxillary from '../../hoc/Auxillary';
 
 const Layout = ({ children }) => (
@@ -8,14 +10,14 @@ const Layout = ({ children }) => (
     <div>
       Toolbar, SideDrawer, Backdrop
     </div>
-    <main>
+    <main className={cssClasses.Content}>
       {children}
     </main>
   </Auxillary>
 );
 
 Layout.propTypes = {
-  children: PropTypes.oneOf([
+  children: PropTypes.oneOfType([
     PropTypes.element.isRequired,
     PropTypes.arrayOf(PropTypes.element.isRequired).isRequired
   ]).isRequired
