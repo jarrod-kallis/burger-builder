@@ -3,6 +3,7 @@ import React from 'react';
 import Auxillary from '../../hoc/Auxillary';
 import Burger from '../../components/Burger/Burger';
 import { SALAD, CHEESE, BACON, MEAT } from '../../types';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 class BurgerBuilder extends React.Component {
   state = {
@@ -14,11 +15,22 @@ class BurgerBuilder extends React.Component {
     }
   };
 
+  addIngredientHandler = (ingredientType) => {
+    const ingredients = {
+      ...this.state.ingredients,
+      [ingredientType]: this.state.ingredients[ingredientType] + 1
+    };
+
+    this.setState({
+      ingredients
+    });
+  }
+
   render() {
     return (
       <Auxillary>
         <Burger ingredients={this.state.ingredients} />
-        <div>Build Controls</div>
+        <BuildControls onAddIngredient={this.addIngredientHandler}/>
       </Auxillary>
     );
   }
