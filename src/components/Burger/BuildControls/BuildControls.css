@@ -1,10 +1,14 @@
 .BuildControls {
   width: 100%;
-  background-color: #CF8F2E;
+  background-color: #cf8f2e;
   display: flex;
   flex-flow: column;
   align-items: centre;
-  box-shadow: 0 2px 1px #CCC;
+  box-shadow: 0 2px 1px #ccc;
   margin: auto;
   padding: 10px 0;
+}
+
+.BuildControls .Price {
+  margin: 5px auto 10px;
 }
