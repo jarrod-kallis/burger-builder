@@ -22,7 +22,18 @@ class BurgerBuilder extends React.Component {
       [CHEESE]: 0,
       [MEAT]: 0
     },
-    totalPrice: BASE_PRICE // Base price of burger
+    totalPrice: BASE_PRICE, // Base price of burger
+    allowedToPurchase: false // Allowed to purchase the burger
+  };
+
+  updateAllowedToPurchase = () => {
+    const numberOfIngredients = Object.values(this.state.ingredients)
+      .map(amount => amount)
+      .reduce((sum, amount) => sum + amount, 0);
+
+    this.setState({
+      allowedToPurchase: numberOfIngredients > 0
+    });
   };
 
   addIngredientHandler = ingredientType => {
@@ -38,8 +49,11 @@ class BurgerBuilder extends React.Component {
       {
         ingredients,
         totalPrice
+      },
+      () => {
+        // this.totalPrice()
+        this.updateAllowedToPurchase();
       }
-      // () => this.totalPrice()
     );
   };
 
@@ -57,8 +71,11 @@ class BurgerBuilder extends React.Component {
         {
           ingredients,
           totalPrice
+        },
+        () => {
+          // this.totalPrice()
+          this.updateAllowedToPurchase();
         }
-        // () => this.totalPrice()
       );
     }
   };
@@ -105,6 +122,7 @@ class BurgerBuilder extends React.Component {
           onRemove={this.removeIngredientHandler}
           disabledRemoveButtonInfo={disabledRemoveButtonInfo}
           totalPrice={this.state.totalPrice}
+          allowedToPurchase={this.state.allowedToPurchase}
         />
       </Auxillary>
     );

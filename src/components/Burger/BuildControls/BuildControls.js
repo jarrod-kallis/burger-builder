@@ -18,11 +18,12 @@ const BuildControls = ({
   onAdd,
   onRemove,
   disabledRemoveButtonInfo,
-  totalPrice
+  totalPrice,
+  allowedToPurchase
 }) => (
   <div className={cssClasses.BuildControls}>
     <p className={cssClasses.Price}>
-      Current Price: <strong>{totalPrice.toFixed(2)}</strong>
+      Current Price: <strong>${totalPrice.toFixed(2)}</strong>
     </p>
     {controls.map(control => (
       <BuildControl
@@ -34,6 +35,7 @@ const BuildControls = ({
         disabledRemoveButtonInfo={disabledRemoveButtonInfo[control.type]}
       />
     ))}
+    <button className={cssClasses.OrderButton} disabled={!allowedToPurchase}>Place Order</button>
   </div>
 );
 
@@ -41,7 +43,8 @@ BuildControls.propTypes = {
   onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   disabledRemoveButtonInfo: PropTypes.shape({}).isRequired,
-  totalPrice: PropTypes.bool.isRequired
+  totalPrice: PropTypes.number.isRequired,
+  allowedToPurchase: PropTypes.bool.isRequired
 };
 
 export default BuildControls;
