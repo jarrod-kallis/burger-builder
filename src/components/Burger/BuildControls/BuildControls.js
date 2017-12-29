@@ -19,7 +19,8 @@ const BuildControls = ({
   onRemove,
   disabledRemoveButtonInfo,
   totalPrice,
-  allowedToPurchase
+  allowedToPurchase,
+  onPlaceOrder
 }) => (
   <div className={cssClasses.BuildControls}>
     <p className={cssClasses.Price}>
@@ -35,13 +36,20 @@ const BuildControls = ({
         disabledRemoveButtonInfo={disabledRemoveButtonInfo[control.type]}
       />
     ))}
-    <button className={cssClasses.OrderButton} disabled={!allowedToPurchase}>Place Order</button>
+    <button
+      className={cssClasses.OrderButton}
+      disabled={!allowedToPurchase}
+      onClick={onPlaceOrder}
+    >
+      Place Order
+    </button>
   </div>
 );
 
 BuildControls.propTypes = {
   onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
+  onPlaceOrder: PropTypes.func.isRequired,
   disabledRemoveButtonInfo: PropTypes.shape({}).isRequired,
   totalPrice: PropTypes.number.isRequired,
   allowedToPurchase: PropTypes.bool.isRequired

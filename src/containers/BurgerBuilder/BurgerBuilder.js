@@ -4,6 +4,8 @@ import Auxillary from '../../hoc/Auxillary';
 import Burger from '../../components/Burger/Burger';
 import { SALAD, CHEESE, BACON, MEAT } from '../../types';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const BASE_PRICE = 4;
 
@@ -23,7 +25,14 @@ class BurgerBuilder extends React.Component {
       [MEAT]: 0
     },
     totalPrice: BASE_PRICE, // Base price of burger
-    allowedToPurchase: false // Allowed to purchase the burger
+    allowedToPurchase: false, // Allowed to purchase the burger
+    isPurchasing: false // Has the user clicked the 'Place Order' button
+  };
+
+  onPlaceOrderHandler = () => {
+    this.setState({
+      isPurchasing: true
+    });
   };
 
   updateAllowedToPurchase = () => {
@@ -116,10 +125,14 @@ class BurgerBuilder extends React.Component {
 
     return (
       <Auxillary>
+        <Modal show={this.state.isPurchasing}>
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           onAdd={this.addIngredientHandler}
           onRemove={this.removeIngredientHandler}
+          onPlaceOrder={this.onPlaceOrderHandler}
           disabledRemoveButtonInfo={disabledRemoveButtonInfo}
           totalPrice={this.state.totalPrice}
           allowedToPurchase={this.state.allowedToPurchase}
