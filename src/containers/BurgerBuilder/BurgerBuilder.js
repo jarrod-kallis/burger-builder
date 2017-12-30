@@ -35,10 +35,14 @@ class BurgerBuilder extends React.Component {
     });
   };
 
-  cancelPurchase = () => {
+  cancelPurchaseHandler = () => {
     this.setState({
       isPurchasing: false
     });
+  };
+
+  continuePurchaseHandler = () => {
+    console.log('Continue purchase');
   };
 
   updateAllowedToPurchase = () => {
@@ -131,8 +135,16 @@ class BurgerBuilder extends React.Component {
 
     return (
       <Auxillary>
-        <Modal show={this.state.isPurchasing} closeModal={this.cancelPurchase}>
-          <OrderSummary ingredients={this.state.ingredients} />
+        <Modal
+          show={this.state.isPurchasing}
+          closeModal={this.cancelPurchaseHandler}
+        >
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            cancelPurchase={this.cancelPurchaseHandler}
+            continuePurchase={this.continuePurchaseHandler}
+            totalPrice={this.state.totalPrice}
+          />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
