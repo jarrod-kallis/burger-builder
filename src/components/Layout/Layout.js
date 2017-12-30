@@ -4,15 +4,12 @@ import PropTypes from 'prop-types';
 import cssClasses from './Layout.css';
 
 import Auxillary from '../../hoc/Auxillary';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
 
 const Layout = ({ children }) => (
   <Auxillary>
-    <div>
-      Toolbar, SideDrawer, Backdrop
-    </div>
-    <main className={cssClasses.Content}>
-      {children}
-    </main>
+    <Toolbar />
+    <main className={cssClasses.Content}>{children}</main>
   </Auxillary>
 );
 
