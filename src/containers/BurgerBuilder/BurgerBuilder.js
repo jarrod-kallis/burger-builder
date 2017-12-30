@@ -35,6 +35,12 @@ class BurgerBuilder extends React.Component {
     });
   };
 
+  cancelPurchase = () => {
+    this.setState({
+      isPurchasing: false
+    });
+  };
+
   updateAllowedToPurchase = () => {
     const numberOfIngredients = Object.values(this.state.ingredients)
       .map(amount => amount)
@@ -125,7 +131,7 @@ class BurgerBuilder extends React.Component {
 
     return (
       <Auxillary>
-        <Modal show={this.state.isPurchasing}>
+        <Modal show={this.state.isPurchasing} closeModal={this.cancelPurchase}>
           <OrderSummary ingredients={this.state.ingredients} />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
