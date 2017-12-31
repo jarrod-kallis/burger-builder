@@ -13,9 +13,11 @@ class Layout extends React.Component {
   };
 
   onOpenSideDrawerHandler = () => {
-    this.setState({
-      showSideDrawer: true
-    });
+    if (window.outerWidth <= 499) {
+      this.setState({
+        showSideDrawer: true
+      });
+    }
   };
 
   onCloseSideDrawerHandler = () => {

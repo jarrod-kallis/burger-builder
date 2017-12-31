@@ -21,14 +21,18 @@
   height: 80%;
 }
 
+.MobileMenu {
+  height: 80%;
+  display: flex;
+}
+
+.MobileMenu img {
+  width: 45px;
+  align-items: center;
+}
+
 @media (max-width: 499px) {
   .DesktopOnly {
     display: none;
-  }
-}
-
-@media (min-width: 500px) {
-  .MobileMenu {
-    visibility: hidden;
   }
 }
