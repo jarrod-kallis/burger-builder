@@ -5,10 +5,12 @@ import cssClasses from './Layout.css';
 
 import Auxillary from '../../hoc/Auxillary';
 import Toolbar from '../Navigation/Toolbar/Toolbar';
+import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
 const Layout = ({ children }) => (
   <Auxillary>
     <Toolbar />
+    <SideDrawer />
     <main className={cssClasses.Content}>{children}</main>
   </Auxillary>
 );

@@ -1,3 +1,3 @@
 .Content {
-  margin-top: 72px; /* Original 16px + Toolbar height 56px */
+  margin-top: 55px; /* 72px = Original 16px + Toolbar height 56px (but this doesn't work nicely on a big screen) */
 }

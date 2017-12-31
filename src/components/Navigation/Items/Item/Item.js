@@ -11,9 +11,13 @@ const Item = props => (
   </li>
 );
 
+Item.defaultProps = {
+  active: false
+};
+
 Item.propTypes = {
   link: PropTypes.string.isRequired,
-  active: PropTypes.bool.isRequired,
+  active: PropTypes.bool,
   children: PropTypes.string.isRequired
 };
 
