@@ -6,7 +6,7 @@ import cssClasses from './SideDrawer.css';
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../Items/Items';
 import Backdrop from '../../UI/Backdrop/Backdrop';
-import Auxillary from '../../../hoc/Auxillary';
+import Auxillary from '../../../hoc/Auxillary/Auxillary';
 
 const SideDrawer = ({ show, close }) => (
   <Auxillary>

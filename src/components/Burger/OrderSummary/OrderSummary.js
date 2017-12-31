@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Auxillary from '../../../hoc/Auxillary';
+import Auxillary from '../../../hoc/Auxillary/Auxillary';
 import SuccessButton from '../../UI/Button/SuccessButton';
 import DangerButton from '../../UI/Button/DangerButton';
 

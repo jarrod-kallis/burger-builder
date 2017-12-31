@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import cssClasses from './Modal.css';
 
-import Auxillary from '../../../hoc/Auxillary';
+import Auxillary from '../../../hoc/Auxillary/Auxillary';
 import Backdrop from '../Backdrop/Backdrop';
 
 class Modal extends React.Component {

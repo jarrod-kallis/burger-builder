@@ -21,7 +21,7 @@
 }
 
 /* Small screen height */
-@media (max-height: 400px) {
+@media (max-height: 450px) {
   .Modal {
     top: 10%;
     height: 80%;

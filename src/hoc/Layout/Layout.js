@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import cssClasses from './Layout.css';
 
-import Auxillary from '../../hoc/Auxillary';
-import Toolbar from '../Navigation/Toolbar/Toolbar';
-import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
+import Auxillary from '../Auxillary/Auxillary';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 
 class Layout extends React.Component {
   state = {
@@ -13,7 +13,7 @@ class Layout extends React.Component {
   };
 
   onOpenSideDrawerHandler = () => {
-    if (window.outerWidth <= 499) {
+    if (window.innerWidth <= 499) {
       this.setState({
         showSideDrawer: true
       });
