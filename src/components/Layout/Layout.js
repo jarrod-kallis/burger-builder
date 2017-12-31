@@ -7,13 +7,36 @@ import Auxillary from '../../hoc/Auxillary';
 import Toolbar from '../Navigation/Toolbar/Toolbar';
 import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
-const Layout = ({ children }) => (
-  <Auxillary>
-    <Toolbar />
-    <SideDrawer />
-    <main className={cssClasses.Content}>{children}</main>
-  </Auxillary>
-);
+class Layout extends React.Component {
+  state = {
+    showSideDrawer: false
+  };
+
+  onOpenSideDrawerHandler = () => {
+    this.setState({
+      showSideDrawer: true
+    });
+  };
+
+  onCloseSideDrawerHandler = () => {
+    this.setState({
+      showSideDrawer: false
+    });
+  };
+
+  render() {
+    return (
+      <Auxillary>
+        <Toolbar onMenuClick={this.onOpenSideDrawerHandler} />
+        <SideDrawer
+          show={this.state.showSideDrawer}
+          close={this.onCloseSideDrawerHandler}
+        />
+        <main className={cssClasses.Content}>{this.props.children}</main>
+      </Auxillary>
+    );
+  }
+}
 
 Layout.propTypes = {
   children: PropTypes.oneOfType([

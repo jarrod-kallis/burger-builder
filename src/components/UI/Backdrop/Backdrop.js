@@ -8,13 +8,13 @@ const Backdrop = props =>
     <div
       role="presentation"
       className={cssClasses.Backdrop}
-      onClick={props.onClick}
+      onClick={props.click}
     />
   ) : null;
 
 Backdrop.propTypes = {
   show: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
+  click: PropTypes.func.isRequired
 };
 
 export default Backdrop;

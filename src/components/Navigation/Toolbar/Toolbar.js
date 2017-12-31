@@ -1,13 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import cssClasses from './Toolbar.css';
 
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../Items/Items';
 
-const Toolbar = () => (
+const Toolbar = ({ onMenuClick }) => (
   <header className={cssClasses.Toolbar}>
-    <div className={cssClasses.MobileMenu}>MENU</div>
+    <div
+      role="presentation"
+      className={cssClasses.MobileMenu}
+      onClick={onMenuClick}
+    >
+      MENU
+    </div>
     <div className={cssClasses.Logo}>
       <Logo />
     </div>
@@ -16,5 +23,9 @@ const Toolbar = () => (
     </nav>
   </header>
 );
+
+Toolbar.propTypes = {
+  onMenuClick: PropTypes.func.isRequired
+};
 
 export default Toolbar;
