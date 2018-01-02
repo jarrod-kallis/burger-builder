@@ -1,11 +1,13 @@
 import React from 'react';
 
+import axios from '../../axios-orders';
 import Auxillary from '../../hoc/Auxillary/Auxillary';
 import Burger from '../../components/Burger/Burger';
 import { SALAD, CHEESE, BACON, MEAT } from '../../types';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const BASE_PRICE = 4;
 
@@ -26,7 +28,8 @@ class BurgerBuilder extends React.Component {
     },
     totalPrice: BASE_PRICE, // Base price of burger
     allowedToPurchase: false, // Allowed to purchase the burger
-    isPurchasing: false // Has the user clicked the 'Place Order' button
+    isPurchasing: false, // Has the user clicked the 'Place Order' button
+    loading: false
   };
 
   onPlaceOrderHandler = () => {
@@ -42,7 +45,40 @@ class BurgerBuilder extends React.Component {
   };
 
   continuePurchaseHandler = () => {
-    console.log('Continue purchase');
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Jarrod Kallis',
+        address: {
+          street: '1 Test Street',
+          zipCode: '1234',
+          country: 'South Africa'
+        },
+        email: 'me@work.com',
+      },
+      deliveryMethod: 'fastest'
+    };
+
+    this.setState({
+      loading: true
+    });
+
+    axios.post('/orders.json', order)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          loading: false,
+          isPurchasing: false
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          loading: false,
+          isPurchasing: false
+        });
+      });
   };
 
   updateAllowedToPurchase = () => {
@@ -133,18 +169,22 @@ class BurgerBuilder extends React.Component {
     //   disabledRemoveButtonInfo[key] = this.state.ingredients[key] < 1;
     // }
 
+    const orderSummary = this.state.loading ?
+      <Spinner /> :
+      <OrderSummary
+        ingredients={this.state.ingredients}
+        cancelPurchase={this.cancelPurchaseHandler}
+        continuePurchase={this.continuePurchaseHandler}
+        totalPrice={this.state.totalPrice}
+      />;
+
     return (
       <Auxillary>
         <Modal
           show={this.state.isPurchasing}
           closeModal={this.cancelPurchaseHandler}
         >
-          <OrderSummary
-            ingredients={this.state.ingredients}
-            cancelPurchase={this.cancelPurchaseHandler}
-            continuePurchase={this.continuePurchaseHandler}
-            totalPrice={this.state.totalPrice}
-          />
+          {orderSummary}
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
