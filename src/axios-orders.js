@@ -1,5 +1,7 @@
 import axios from 'axios';
 
-export default axios.create({
+const axiosInstance = axios.create({
     baseURL: 'https://burger-builder-api.firebaseio.com/'
 });
+
+export default axiosInstance;

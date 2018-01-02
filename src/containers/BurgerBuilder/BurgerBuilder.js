@@ -8,6 +8,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const BASE_PRICE = 4;
 
@@ -65,15 +66,13 @@ class BurgerBuilder extends React.Component {
     });
 
     axios.post('/orders.json', order)
-      .then(response => {
-        console.log(response);
+      .then(() => {
         this.setState({
           loading: false,
           isPurchasing: false
         });
       })
-      .catch(error => {
-        console.log(error);
+      .catch(() => {
         this.setState({
           loading: false,
           isPurchasing: false
@@ -200,4 +199,4 @@ class BurgerBuilder extends React.Component {
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
