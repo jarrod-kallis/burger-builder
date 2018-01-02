@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import cssClasses from './Ingredient.css';
 
-import { BREAD_BOTTOM, BREAD_TOP, MEAT, CHEESE, SALAD, BACON } from '../../../types';
+import { BREAD_BOTTOM, BREAD_TOP } from '../../../types';
+import { toTitleCase } from '../../../utils/stringUtils';
 
 const Ingredient = ({ type }) => {
   let ingredient = null;
@@ -20,28 +21,16 @@ const Ingredient = ({ type }) => {
         </div>
       )
       break;
-    case (MEAT):
-      ingredient = <div className={cssClasses.Meat} />
-      break;
-    case (CHEESE):
-      ingredient = <div className={cssClasses.Cheese} />
-      break;
-    case (SALAD):
-      ingredient = <div className={cssClasses.Salad} />
-      break;
-    case (BACON):
-      ingredient = <div className={cssClasses.Bacon} />
-      break;
     default:
-      ingredient = null;
+      ingredient = <div className={cssClasses[toTitleCase(type)]} />;
   }
 
   return ingredient;
 };
 
 Ingredient.propTypes = {
-  type: PropTypes.oneOf([
-    BREAD_BOTTOM, BREAD_TOP, MEAT, CHEESE, SALAD, BACON
+  type: PropTypes.oneOfType([
+    PropTypes.string.isRequired
   ]).isRequired
 };
 

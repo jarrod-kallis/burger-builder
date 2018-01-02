@@ -8,7 +8,7 @@ const withErrorHandler = (WrappedComponent, axiosInstance) => class extends Reac
     error: null
   }
 
-  componentDidMount() {
+  componentWillMount() {
     axiosInstance.interceptors.request.use(request => {
       this.closeErrorHandler();
       return request;

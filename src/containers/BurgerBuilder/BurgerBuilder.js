@@ -3,7 +3,6 @@ import React from 'react';
 import axios from '../../axios-orders';
 import Auxillary from '../../hoc/Auxillary/Auxillary';
 import Burger from '../../components/Burger/Burger';
-import { SALAD, CHEESE, BACON, MEAT } from '../../types';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
@@ -12,26 +11,35 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const BASE_PRICE = 4;
 
-const INGREDIENT_PRICES = {
-  [SALAD]: 0.5,
-  [BACON]: 0.7,
-  [CHEESE]: 0.4,
-  [MEAT]: 1.3
-};
-
 class BurgerBuilder extends React.Component {
   state = {
-    ingredients: {
-      [SALAD]: 0,
-      [BACON]: 0,
-      [CHEESE]: 0,
-      [MEAT]: 0
-    },
+    ingredients: {},
+    ingredientPrices: {},
     totalPrice: BASE_PRICE, // Base price of burger
     allowedToPurchase: false, // Allowed to purchase the burger
     isPurchasing: false, // Has the user clicked the 'Place Order' button
-    loading: false
+    loading: true
   };
+
+  componentDidMount() {
+    axios.get('/ingredients.json')
+      .then(response => this.setState({
+        ingredients: response.data,
+        loading: false
+      }))
+      .catch(() => this.setState({
+        loading: false
+      }));
+
+    axios.get('/ingredient-prices.json')
+      .then(response => this.setState({
+        ingredientPrices: response.data,
+        loading: false
+      }))
+      .catch(() => this.setState({
+        loading: false
+      }));
+  }
 
   onPlaceOrderHandler = () => {
     this.setState({
@@ -97,7 +105,7 @@ class BurgerBuilder extends React.Component {
     };
 
     const totalPrice =
-      this.state.totalPrice + INGREDIENT_PRICES[ingredientType];
+      this.state.totalPrice + this.state.ingredientPrices[ingredientType];
 
     this.setState(
       {
@@ -119,7 +127,7 @@ class BurgerBuilder extends React.Component {
       };
 
       const totalPrice =
-        this.state.totalPrice - INGREDIENT_PRICES[ingredientType];
+        this.state.totalPrice - this.state.ingredientPrices[ingredientType];
 
       this.setState(
         {
@@ -185,15 +193,20 @@ class BurgerBuilder extends React.Component {
         >
           {orderSummary}
         </Modal>
-        <Burger ingredients={this.state.ingredients} />
-        <BuildControls
-          onAdd={this.addIngredientHandler}
-          onRemove={this.removeIngredientHandler}
-          onPlaceOrder={this.onPlaceOrderHandler}
-          disabledRemoveButtonInfo={disabledRemoveButtonInfo}
-          totalPrice={this.state.totalPrice}
-          allowedToPurchase={this.state.allowedToPurchase}
-        />
+        {this.state.loading ? <Spinner /> : (
+          <Auxillary>
+            <Burger ingredients={this.state.ingredients} />
+            <BuildControls
+              ingredients={this.state.ingredients}
+              onAdd={this.addIngredientHandler}
+              onRemove={this.removeIngredientHandler}
+              onPlaceOrder={this.onPlaceOrderHandler}
+              disabledRemoveButtonInfo={disabledRemoveButtonInfo}
+              totalPrice={this.state.totalPrice}
+              allowedToPurchase={this.state.allowedToPurchase}
+            />
+          </Auxillary>
+        )}
       </Auxillary>
     );
   }
