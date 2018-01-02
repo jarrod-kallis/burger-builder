@@ -23,19 +23,17 @@ class BurgerBuilder extends React.Component {
 
   componentDidMount() {
     axios.get('/ingredients.json')
-      .then(response => this.setState({
-        ingredients: response.data,
-        loading: false
-      }))
-      .catch(() => this.setState({
-        loading: false
-      }));
-
-    axios.get('/ingredient-prices.json')
-      .then(response => this.setState({
-        ingredientPrices: response.data,
-        loading: false
-      }))
+      .then(ingredients => {
+        axios.get('/ingredient-prices.json')
+          .then(ingredientPrices => this.setState({
+            ingredients: ingredients.data,
+            ingredientPrices: ingredientPrices.data,
+            loading: false
+          }))
+          .catch(() => this.setState({
+            loading: false
+          }));
+      })
       .catch(() => this.setState({
         loading: false
       }));
