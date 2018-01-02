@@ -40,11 +40,15 @@ class Layout extends React.Component {
   }
 }
 
+Layout.defaultProps = {
+  children: {}
+}
+
 Layout.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.element.isRequired,
     PropTypes.arrayOf(PropTypes.element.isRequired).isRequired
-  ]).isRequired
+  ])
 };
 
 export default Layout;
