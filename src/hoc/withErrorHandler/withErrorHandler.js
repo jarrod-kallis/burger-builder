@@ -4,21 +4,33 @@ import Modal from '../../components/UI/Modal/Modal';
 import Auxillary from '../Auxillary/Auxillary';
 
 const withErrorHandler = (WrappedComponent, axiosInstance) => class extends React.Component {
-  state = {
-    error: null
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      error: null
+    }
+
+    this.requestInterceptor = null;
+    this.responseInterceptor = null;
   }
 
   componentWillMount() {
-    axiosInstance.interceptors.request.use(request => {
+    this.requestInterceptor = axiosInstance.interceptors.request.use(request => {
       this.closeErrorHandler();
       return request;
     });
 
-    axiosInstance.interceptors.response.use(response => response,
+    this.responseInterceptor = axiosInstance.interceptors.response.use(response => response,
       error =>
         this.setState({
           error
         }));
+  }
+
+  componentWillUnmount() {
+    axiosInstance.interceptors.request.eject(this.requestInterceptor);
+    axiosInstance.interceptors.response.eject(this.responseInterceptor);
   }
 
   closeErrorHandler = () => {
