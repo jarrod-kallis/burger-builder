@@ -6,10 +6,10 @@ import Item from './Item/Item';
 
 const Items = () => (
   <ul className={cssClasses.Items}>
-    <Item link="/" active>
+    <Item link="/" exact>
       Burger Builder
     </Item>
-    <Item link="/">Checkout</Item>
+    <Item link="/orders">Orders</Item>
   </ul>
 );
 

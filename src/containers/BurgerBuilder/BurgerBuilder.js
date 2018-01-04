@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import axios from '../../axios-orders';
 import Auxillary from '../../hoc/Auxillary/Auxillary';
@@ -22,21 +23,29 @@ class BurgerBuilder extends React.Component {
   };
 
   componentDidMount() {
-    axios.get('/ingredients.json')
+    axios
+      .get('/ingredients.json')
       .then(ingredients => {
-        axios.get('/ingredient-prices.json')
-          .then(ingredientPrices => this.setState({
-            ingredients: ingredients.data,
-            ingredientPrices: ingredientPrices.data,
-            loading: false
-          }))
-          .catch(() => this.setState({
-            loading: false
-          }));
+        axios
+          .get('/ingredient-prices.json')
+          .then(ingredientPrices =>
+            this.setState({
+              ingredients: ingredients.data,
+              ingredientPrices: ingredientPrices.data,
+              loading: false
+            })
+          )
+          .catch(() =>
+            this.setState({
+              loading: false
+            })
+          );
       })
-      .catch(() => this.setState({
-        loading: false
-      }));
+      .catch(() =>
+        this.setState({
+          loading: false
+        })
+      );
   }
 
   onPlaceOrderHandler = () => {
@@ -52,38 +61,12 @@ class BurgerBuilder extends React.Component {
   };
 
   continuePurchaseHandler = () => {
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Jarrod Kallis',
-        address: {
-          street: '1 Test Street',
-          zipCode: '1234',
-          country: 'South Africa'
-        },
-        email: 'me@work.com',
-      },
-      deliveryMethod: 'fastest'
-    };
-
-    this.setState({
-      loading: true
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?ingredients=${encodeURIComponent(
+        JSON.stringify(this.state.ingredients)
+      )}&price=${this.state.totalPrice.toFixed(2)}`
     });
-
-    axios.post('/orders.json', order)
-      .then(() => {
-        this.setState({
-          loading: false,
-          isPurchasing: false
-        });
-      })
-      .catch(() => {
-        this.setState({
-          loading: false,
-          isPurchasing: false
-        });
-      });
   };
 
   updateAllowedToPurchase = () => {
@@ -174,14 +157,16 @@ class BurgerBuilder extends React.Component {
     //   disabledRemoveButtonInfo[key] = this.state.ingredients[key] < 1;
     // }
 
-    const orderSummary = this.state.loading ?
-      <Spinner /> :
+    const orderSummary = this.state.loading ? (
+      <Spinner />
+    ) : (
       <OrderSummary
         ingredients={this.state.ingredients}
         cancelPurchase={this.cancelPurchaseHandler}
         continuePurchase={this.continuePurchaseHandler}
         totalPrice={this.state.totalPrice}
-      />;
+      />
+    );
 
     return (
       <Auxillary>
@@ -191,7 +176,9 @@ class BurgerBuilder extends React.Component {
         >
           {orderSummary}
         </Modal>
-        {this.state.loading ? <Spinner /> : (
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
           <Auxillary>
             <Burger ingredients={this.state.ingredients} />
             <BuildControls
@@ -209,5 +196,11 @@ class BurgerBuilder extends React.Component {
     );
   }
 }
+
+BurgerBuilder.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired
+};
 
 export default withErrorHandler(BurgerBuilder, axios);
