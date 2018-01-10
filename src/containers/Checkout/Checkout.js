@@ -37,21 +37,32 @@ class Checkout extends React.Component {
   placeOrderHandler = contactDetails => {
     const order = {
       ingredients: this.state.ingredients,
-      price: this.state.price,
-      customer: {
-        name: contactDetails.name,
-        address: contactDetails.address,
-        email: contactDetails.email
-      },
-      deliveryMethod: 'fastest'
+      price: this.state.price
+      // customer: {
+      //   name: contactDetails.name,
+      //   address: contactDetails.address,
+      //   email: contactDetails.email
+      // },
+      // deliveryMethod: 'fastest'
     };
+
+    const customerDetailsOrder = Object.keys(contactDetails).reduce(
+      (prevObj, key) => ({
+        ...prevObj,
+        customer: {
+          ...prevObj.customer,
+          [key]: contactDetails[key].value
+        }
+      }),
+      order
+    );
 
     this.setState({
       loading: true
     });
 
     axios
-      .post('/orders.json', order)
+      .post('/orders.json', customerDetailsOrder)
       .then(() => {
         this.setState({
           loading: false
