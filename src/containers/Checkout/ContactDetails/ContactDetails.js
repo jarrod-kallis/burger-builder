@@ -12,41 +12,43 @@ class ContactDetails extends React.Component {
 
     this.state = {
       data: {
-        name: this.createElement(
-          'input',
-          'text',
-          'name',
-          'Name',
-          this.onChange
-        ),
-        email: this.createElement(
-          'input',
-          'email',
-          'email',
-          'Email Address',
-          this.onChange
-        ),
-        street: this.createElement(
-          'input',
-          'text',
-          'street',
-          'Street',
-          this.onChange
-        ),
-        postalCode: this.createElement(
-          'input',
-          'text',
-          'postalCode',
-          'Postal Code',
-          this.onChange
-        ),
-        country: this.createElement(
-          'input',
-          'text',
-          'country',
-          'Country',
-          this.onChange
-        ),
+        customer: {
+          name: this.createElement(
+            'input',
+            'text',
+            'name',
+            'Name',
+            this.onCustomerChange
+          ),
+          email: this.createElement(
+            'input',
+            'email',
+            'email',
+            'Email Address',
+            this.onCustomerChange
+          ),
+          street: this.createElement(
+            'input',
+            'text',
+            'street',
+            'Street',
+            this.onCustomerChange
+          ),
+          postalCode: this.createElement(
+            'input',
+            'text',
+            'postalCode',
+            'Postal Code',
+            this.onCustomerChange
+          ),
+          country: this.createElement(
+            'input',
+            'text',
+            'country',
+            'Country',
+            this.onCustomerChange
+          )
+        },
         deliveryMethod: this.createElement(
           'select',
           null,
@@ -65,6 +67,21 @@ class ContactDetails extends React.Component {
     };
   }
 
+  onCustomerChange = event => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        customer: {
+          ...this.state.data.customer,
+          [event.target.name]: {
+            ...this.state.data.customer[event.target.name],
+            value: event.target.value
+          }
+        }
+      }
+    });
+  };
+
   onChange = event => {
     this.setState({
       data: {
@@ -75,6 +92,11 @@ class ContactDetails extends React.Component {
         }
       }
     });
+  };
+
+  onSubmit = event => {
+    event.preventDefault();
+    this.props.onOrderClicked(this.state.data);
   };
 
   createElement = (
@@ -97,31 +119,34 @@ class ContactDetails extends React.Component {
     value: ''
   });
 
+  renderComponents = state => {
+    const componentArray = Object.entries(state).reduce((prev, [key]) => {
+      if (state[key].elementType) {
+        prev.push(
+          <Input
+            key={key}
+            elementType={state[key].elementType}
+            elementConfig={state[key].elementConfig}
+            value={state[key].value}
+          />
+        );
+      } else {
+        return this.renderComponents(state[key]);
+      }
+      return prev;
+    }, []);
+
+    return componentArray;
+  };
+
   render() {
     return (
       <div className={cssClasses.ContactDetails}>
         <h4>Contact Details</h4>
         <form>
-          {Object.keys(this.state.data).map(component => {
-            const config = this.state.data[component];
-            return (
-              <Input
-                key={component}
-                elementType={config.elementType}
-                elementConfig={config.elementConfig}
-                value={config.value}
-              />
-            );
-          })}
+          {this.renderComponents(this.state.data)}
 
-          <SuccessButton
-            onClick={event => {
-              event.preventDefault();
-              this.props.onOrderClicked(this.state.data);
-            }}
-          >
-            Order
-          </SuccessButton>
+          <SuccessButton onClick={this.onSubmit}>Order</SuccessButton>
         </form>
       </div>
     );

@@ -34,6 +34,23 @@ class Checkout extends React.Component {
     });
   };
 
+  buildOrderObject = contactDetails => {
+    const result = Object.entries(contactDetails).reduce((prev, [key]) => {
+      if (contactDetails[key].elementType) {
+        return {
+          ...prev,
+          [key]: contactDetails[key].value
+        };
+      }
+
+      return {
+        [key]: this.buildOrderObject(contactDetails[key])
+      };
+    }, {});
+
+    return result;
+  };
+
   placeOrderHandler = contactDetails => {
     const order = {
       ingredients: this.state.ingredients,
@@ -46,23 +63,17 @@ class Checkout extends React.Component {
       // deliveryMethod: 'fastest'
     };
 
-    const customerDetailsOrder = Object.keys(contactDetails).reduce(
-      (prevObj, key) => ({
-        ...prevObj,
-        customer: {
-          ...prevObj.customer,
-          [key]: contactDetails[key].value
-        }
-      }),
-      order
-    );
+    const orderWithCustomerDetails = {
+      ...order,
+      ...this.buildOrderObject(contactDetails)
+    };
 
     this.setState({
       loading: true
     });
 
     axios
-      .post('/orders.json', customerDetailsOrder)
+      .post('/orders.json', orderWithCustomerDetails)
       .then(() => {
         this.setState({
           loading: false
