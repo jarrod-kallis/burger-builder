@@ -16,8 +16,6 @@ class Orders extends React.Component {
     axios
       .get('/orders.json')
       .then(response => {
-        console.log(response.data);
-
         const orders = Object.keys(response.data).map(orderKey => ({
           id: orderKey,
           ...response.data[orderKey]

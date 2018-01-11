@@ -16,7 +16,8 @@ const Order = props => {
           display: 'inline-block',
           margin: '5px 8px',
           border: '1px solid #ccc',
-          padding: '5px'
+          padding: '5px',
+          width: '90px'
         }}
       >
         {props.ingredients[ingredientKey]} x {toTitleCase(ingredientKey)}

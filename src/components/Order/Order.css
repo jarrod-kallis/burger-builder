@@ -15,7 +15,7 @@
   margin: 0 auto;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 885px) {
   .Burger {
     float: right;
   }
