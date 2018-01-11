@@ -43,6 +43,7 @@ class Orders extends React.Component {
                 key={order.id}
                 ingredients={order.ingredients}
                 price={order.price}
+                deliveryMethod={order.deliveryMethod}
               />
             ))}
           </div>
