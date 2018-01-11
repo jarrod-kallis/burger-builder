@@ -18,35 +18,40 @@ class ContactDetails extends React.Component {
             'text',
             'name',
             'Name',
-            this.onCustomerChange
+            this.onCustomerChange,
+            { required: true }
           ),
           email: this.createElement(
             'input',
             'email',
             'email',
             'Email Address',
-            this.onCustomerChange
+            this.onCustomerChange,
+            { required: true }
           ),
           street: this.createElement(
             'input',
             'text',
             'street',
             'Street',
-            this.onCustomerChange
+            this.onCustomerChange,
+            { required: true }
           ),
           postalCode: this.createElement(
             'input',
             'text',
             'postalCode',
             'Postal Code',
-            this.onCustomerChange
+            this.onCustomerChange,
+            { required: true, minLength: 4, maxLength: 4 }
           ),
           country: this.createElement(
             'input',
             'text',
             'country',
             'Country',
-            this.onCustomerChange
+            this.onCustomerChange,
+            { required: true }
           )
         },
         deliveryMethod: this.createElement(
@@ -55,6 +60,7 @@ class ContactDetails extends React.Component {
           'deliveryMethod',
           'Delivery Method',
           this.onChange,
+          { required: true },
           {
             options: [
               { value: '', displayValue: 'Please select...' },
@@ -75,7 +81,11 @@ class ContactDetails extends React.Component {
           ...this.state.data.customer,
           [event.target.name]: {
             ...this.state.data.customer[event.target.name],
-            value: event.target.value
+            value: event.target.value,
+            valid: this.isValid(
+              event.target.value,
+              this.state.data.customer[event.target.name].validation
+            )
           }
         }
       }
@@ -88,7 +98,11 @@ class ContactDetails extends React.Component {
         ...this.state.data,
         [event.target.name]: {
           ...this.state.data[event.target.name],
-          value: event.target.value
+          value: event.target.value,
+          valid: this.isValid(
+            event.target.value,
+            this.state.data[event.target.name].validation
+          )
         }
       }
     });
@@ -105,6 +119,7 @@ class ContactDetails extends React.Component {
     name,
     label,
     onChangeHandler,
+    validation = {},
     { ...args }
   ) => ({
     elementType,
@@ -116,8 +131,41 @@ class ContactDetails extends React.Component {
       onChange: onChangeHandler,
       ...args
     },
-    value: ''
+    value: '',
+    validation,
+    valid: false
   });
+
+  isValid = (value, rules) => {
+    let isValid = true;
+
+    if (rules) {
+      if (rules.required && !value.trim()) {
+        isValid = false;
+      }
+
+      if (isValid && rules.minLength && value.length < rules.minLength) {
+        isValid = false;
+      }
+
+      if (isValid && rules.maxLength && value.length > rules.maxLength) {
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  };
+
+  isValidOrder = state => {
+    const isValid = Object.entries(state).reduce((prev, [key]) => {
+      if (state[key].elementType) {
+        return prev && state[key].valid;
+      }
+      return this.isValidOrder(state[key]);
+    }, true);
+
+    return isValid;
+  };
 
   renderComponents = state => {
     const componentArray = Object.entries(state).reduce((prev, [key]) => {
@@ -128,6 +176,7 @@ class ContactDetails extends React.Component {
             elementType={state[key].elementType}
             elementConfig={state[key].elementConfig}
             value={state[key].value}
+            valid={state[key].valid}
           />
         );
       } else {
@@ -146,7 +195,12 @@ class ContactDetails extends React.Component {
         <form>
           {this.renderComponents(this.state.data)}
 
-          <SuccessButton onClick={this.onSubmit}>Order</SuccessButton>
+          <SuccessButton
+            onClick={this.onSubmit}
+            disabled={!this.isValidOrder(this.state.data)}
+          >
+            Order
+          </SuccessButton>
         </form>
       </div>
     );

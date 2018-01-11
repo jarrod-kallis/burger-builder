@@ -1,10 +1,11 @@
 .Input {
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   box-sizing: border-box;
 }
 
 .Label {
+  font-size: 14px;
   font-weight: bold;
   display: block;
   margin-bottom: 8px;
@@ -25,4 +26,14 @@
 .InputElement:focus {
   outline: none;
   background-color: #ccc;
+}
+
+.Error {
+  border: 1px solid red;
+  background-color: #fda49a;
+}
+
+.ErrorMessage {
+  margin: 5px 0 auto auto;
+  color: #fda49a;
 }

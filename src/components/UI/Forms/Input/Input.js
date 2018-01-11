@@ -3,48 +3,71 @@ import PropTypes from 'prop-types';
 
 import cssClasses from './Input.css';
 
-const Input = props => {
-  let inputElement = null;
-  const id = Math.random();
+class Input extends React.Component {
+  state = {
+    touched: false
+  };
 
-  switch (props.elementType) {
-    case 'select':
-      inputElement = (
-        <select
-          className={cssClasses.InputElement}
-          id={id}
-          onChange={props.elementConfig.onChange}
-          name={props.elementConfig.name}
-          value={props.value}
-        >
-          {props.elementConfig.options.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.displayValue}
-            </option>
-          ))}
-        </select>
-      );
-      break;
-    default:
-      inputElement = (
-        <input
-          className={cssClasses.InputElement}
-          id={id}
-          {...props.elementConfig}
-          value={props.value}
-        />
-      );
+  inputTouchedHandler = () => {
+    this.setState({
+      touched: true
+    });
+  };
+
+  render() {
+    const { valid, elementType, elementConfig, value } = this.props;
+    const { touched } = this.state;
+
+    let inputElement = null;
+    const id = Math.random();
+
+    const inputCssClasses = [cssClasses.InputElement];
+    if (!valid && touched) {
+      inputCssClasses.push(cssClasses.Error);
+    }
+
+    switch (elementType) {
+      case 'select':
+        inputElement = (
+          <select
+            className={inputCssClasses.join(' ')}
+            id={id}
+            onChange={elementConfig.onChange}
+            name={elementConfig.name}
+            value={value}
+            onBlur={this.inputTouchedHandler}
+          >
+            {elementConfig.options.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.displayValue}
+              </option>
+            ))}
+          </select>
+        );
+        break;
+      default:
+        inputElement = (
+          <input
+            className={inputCssClasses.join(' ')}
+            id={id}
+            {...elementConfig}
+            value={value}
+            onBlur={this.inputTouchedHandler}
+          />
+        );
+    }
+
+    return (
+      <div className={cssClasses.Input}>
+        <label htmlFor={id} className={cssClasses.Label}>
+          {elementConfig.label}
+        </label>
+        {inputElement}
+        {!valid && touched && <p className={cssClasses.ErrorMessage}>Please enter a valid {elementConfig.placeholder.toLowerCase()}</p>}
+      </div>
+    );
   }
-
-  return (
-    <div className={cssClasses.Input}>
-      <label htmlFor={id} className={cssClasses.Label}>
-        {props.elementConfig.label}
-      </label>
-      {inputElement}
-    </div>
-  );
-};
+}
 
 Input.defaultProps = {
   options: []
@@ -56,6 +79,7 @@ Input.propTypes = {
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(
       PropTypes.shape({
         value: PropTypes.string.isRequired,
@@ -63,7 +87,8 @@ Input.propTypes = {
       }).isRequired
     )
   }).isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
+  valid: PropTypes.bool.isRequired
 };
 
 export default Input;
