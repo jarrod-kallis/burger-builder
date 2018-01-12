@@ -16,6 +16,10 @@
 }
 
 @media (min-width: 885px) {
+  .Order {
+    width: 750px;
+  }
+
   .Burger {
     float: right;
   }
