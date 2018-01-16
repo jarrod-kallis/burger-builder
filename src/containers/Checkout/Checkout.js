@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import axios from '../../axios-orders';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
@@ -12,13 +13,13 @@ class Checkout extends React.Component {
   constructor(props) {
     super(props);
 
-    const params = new URLSearchParams(this.props.location.search);
-    const ingredients = JSON.parse(params.get('ingredients'));
-    const price = +params.get('price');
+    // const params = new URLSearchParams(this.props.location.search);
+    // const ingredients = JSON.parse(params.get('ingredients'));
+    // const price = +params.get('price');
 
     this.state = {
-      ingredients,
-      price,
+      // ingredients,
+      // price,
       loading: false
     };
   }
@@ -53,8 +54,8 @@ class Checkout extends React.Component {
 
   placeOrderHandler = contactDetails => {
     const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.price
+      ingredients: this.props.ingredients,
+      price: this.props.totalPrice
       // customer: {
       //   name: contactDetails.name,
       //   address: contactDetails.address,
@@ -89,8 +90,9 @@ class Checkout extends React.Component {
   };
 
   render() {
-    const params = new URLSearchParams(this.props.location.search);
-    const ingredients = JSON.parse(params.get('ingredients'));
+    // const params = new URLSearchParams(this.props.location.search);
+    // const ingredients = JSON.parse(params.get('ingredients'));
+    const { ingredients } = this.props;
 
     return (
       <div>
@@ -117,6 +119,8 @@ class Checkout extends React.Component {
 }
 
 Checkout.propTypes = {
+  ingredients: PropTypes.shape().isRequired,
+  totalPrice: PropTypes.number.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string.isRequired
   }).isRequired,
@@ -129,4 +133,9 @@ Checkout.propTypes = {
   }).isRequired
 };
 
-export default Checkout;
+const mapStateToProps = state => ({
+  ingredients: state.burger.ingredients,
+  totalPrice: state.burger.totalPrice
+});
+
+export default connect(mapStateToProps)(Checkout);

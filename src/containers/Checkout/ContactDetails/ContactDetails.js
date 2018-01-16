@@ -27,7 +27,7 @@ class ContactDetails extends React.Component {
             'email',
             'Email Address',
             this.onCustomerChange,
-            { required: true }
+            { required: true, isEmail: true }
           ),
           street: this.createElement(
             'input',
@@ -150,6 +150,11 @@ class ContactDetails extends React.Component {
 
       if (isValid && rules.maxLength && value.length > rules.maxLength) {
         isValid = false;
+      }
+
+      if (isValid && rules.isEmail) {
+        const pattern = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        isValid = pattern.test(value);
       }
     }
 

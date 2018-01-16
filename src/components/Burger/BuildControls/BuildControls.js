@@ -10,18 +10,16 @@ class BuildControls extends React.Component {
   constructor(props) {
     super(props);
 
-    const controls = Object.keys(this.props.ingredients).map((ingredientKey) => (
-      {
-        type: ingredientKey,
-        label: toTitleCase(ingredientKey)
-      }
-    ));
+    const controls = Object.keys(this.props.ingredients).map(ingredientKey => ({
+      type: ingredientKey,
+      label: toTitleCase(ingredientKey)
+    }));
 
     this.state = {
       controls
     };
   }
-  
+
   render() {
     const {
       onAdd,
@@ -42,8 +40,8 @@ class BuildControls extends React.Component {
             key={control.type}
             label={control.label}
             type={control.type}
-            onAdd={onAdd}
-            onRemove={onRemove}
+            onAdd={() => onAdd(control.type)}
+            onRemove={() => onRemove(control.type)}
             disabledRemoveButtonInfo={disabledRemoveButtonInfo[control.type]}
           />
         ))}
@@ -53,7 +51,7 @@ class BuildControls extends React.Component {
           onClick={onPlaceOrder}
         >
           Place Order
-    </button>
+        </button>
       </div>
     );
   }
@@ -61,7 +59,7 @@ class BuildControls extends React.Component {
 
 BuildControls.defaultProps = {
   ingredients: {}
-}
+};
 
 BuildControls.propTypes = {
   onAdd: PropTypes.func.isRequired,
