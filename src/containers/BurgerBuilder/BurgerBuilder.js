@@ -10,39 +10,36 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-// import { addIngredient, removeIngredient } from '../../actions/burger';
-import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../../actions/types';
+import {
+  addIngredient,
+  removeIngredient,
+  fetchIngredients,
+  fetchIngredientPrices
+} from '../../actions/burger';
 
 class BurgerBuilder extends React.Component {
   state = {
     isPurchasing: false, // Has the user clicked the 'Place Order' button
-    loading: false
+    loading: true
   };
 
   componentDidMount() {
-    // axios
-    //   .get('/ingredients.json')
-    //   .then(ingredients => {
-    //     axios
-    //       .get('/ingredient-prices.json')
-    //       .then(ingredientPrices =>
-    //         this.setState({
-    //           ingredients: ingredients.data,
-    //           ingredientPrices: ingredientPrices.data,
-    //           loading: false
-    //         })
-    //       )
-    //       .catch(() =>
-    //         this.setState({
-    //           loading: false
-    //         })
-    //       );
-    //   })
-    //   .catch(() =>
-    //     this.setState({
-    //       loading: false
-    //     })
-    //   );
+    this.props
+      .fetchIngredients()
+      .then(() => {
+        this.props.fetchIngredientPrices().then(() => {
+          this.setState({
+            ...this.state,
+            loading: false
+          });
+        });
+      })
+      .catch(() => {
+        this.setState({
+          ...this.state,
+          loading: false
+        });
+      });
   }
 
   onPlaceOrderHandler = () => {
@@ -140,7 +137,9 @@ BurgerBuilder.propTypes = {
   removeIngredient: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
-  }).isRequired
+  }).isRequired,
+  fetchIngredients: PropTypes.func.isRequired,
+  fetchIngredientPrices: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -150,13 +149,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addIngredient: ingredientType =>
-    dispatch({ type: ADD_INGREDIENT, ingredientType }),
+  addIngredient: ingredientType => dispatch(addIngredient(ingredientType)),
   removeIngredient: ingredientType =>
-    dispatch({ type: REMOVE_INGREDIENT, ingredientType })
+    dispatch(removeIngredient(ingredientType)),
+  fetchIngredients: () => fetchIngredients()(dispatch),
+  fetchIngredientPrices: () => fetchIngredientPrices()(dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps /* { addIngredient, removeIngredient }*/
-)(withErrorHandler(BurgerBuilder, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withErrorHandler(BurgerBuilder, axios)
+);

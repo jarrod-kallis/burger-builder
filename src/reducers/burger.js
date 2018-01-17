@@ -1,25 +1,37 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../actions/types';
+import {
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+  INGREDIENTS_RECEIVED,
+  INGREDIENT_PRICES_RECEIVED,
+  INGREDIENTS_RECEIVED_FAILED
+} from '../actions/types';
 
 const BASE_PRICE = 4;
 
 const initialState = {
-  ingredients: {
-    salad: 0,
-    bacon: 0,
-    cheese: 0,
-    meat: 0
-  },
-  ingredientPrices: {
-    salad: 0.3,
-    bacon: 0.7,
-    cheese: 0.5,
-    meat: 1.4
-  },
-  totalPrice: BASE_PRICE // Base price of burger
+  ingredients: {},
+  ingredientPrices: null,
+  totalPrice: BASE_PRICE, // Base price of burger
+  error: ''
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case INGREDIENTS_RECEIVED:
+      return {
+        ...state,
+        ingredients: action.ingredients
+      };
+    case INGREDIENTS_RECEIVED_FAILED:
+      return {
+        ...state,
+        error: action.error
+      };
+    case INGREDIENT_PRICES_RECEIVED:
+      return {
+        ...state,
+        ingredientPrices: action.ingredientPrices
+      };
     case ADD_INGREDIENT:
       return {
         ...state,
