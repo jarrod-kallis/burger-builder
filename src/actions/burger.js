@@ -3,7 +3,8 @@ import {
   REMOVE_INGREDIENT,
   INGREDIENTS_RECEIVED,
   INGREDIENTS_RECEIVED_FAILED,
-  INGREDIENT_PRICES_RECEIVED
+  INGREDIENT_PRICES_RECEIVED,
+  INGREDIENT_PRICES_RECEIVED_FAILED
 } from './types';
 import api from '../api';
 
@@ -22,14 +23,17 @@ const ingredientsReceived = ingredients => ({
   ingredients
 });
 
-const ingredientsReceivedFailed = error => ({
-  type: INGREDIENTS_RECEIVED_FAILED,
-  error
+const ingredientsReceivedFailed = () => ({
+  type: INGREDIENTS_RECEIVED_FAILED
 });
 
 const ingredientPricesReceived = ingredientPrices => ({
   type: INGREDIENT_PRICES_RECEIVED,
   ingredientPrices
+});
+
+const ingredientPricesReceivedFailed = () => ({
+  type: INGREDIENT_PRICES_RECEIVED_FAILED
 });
 
 // export const addIngredient = ingredientType => dispatch => {
@@ -51,11 +55,12 @@ export const fetchIngredients = () => dispatch =>
   api.ingredients
     .get()
     .then(ingredients => dispatch(ingredientsReceived(ingredients)))
-    .catch(error => dispatch(ingredientsReceivedFailed(error.message)));
+    .catch(() => dispatch(ingredientsReceivedFailed()));
 
 export const fetchIngredientPrices = () => dispatch =>
   api.ingredients.prices
     .get()
     .then(ingredientPrices =>
       dispatch(ingredientPricesReceived(ingredientPrices))
-    );
+    )
+    .catch(() => dispatch(ingredientPricesReceivedFailed()));

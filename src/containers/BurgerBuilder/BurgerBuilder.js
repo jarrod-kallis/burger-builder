@@ -113,7 +113,8 @@ class BurgerBuilder extends React.Component {
           <Auxillary>
             <Burger ingredients={this.props.ingredients} />
             <BuildControls
-              ingredients={this.props.ingredients}
+              /* If any error occurrs then don't supply the ingredients (this is so we can still show a decent home page) */
+              ingredients={this.props.error ? {} : this.props.ingredients}
               onAdd={this.props.addIngredient}
               onRemove={this.props.removeIngredient}
               onPlaceOrder={this.onPlaceOrderHandler}
@@ -139,13 +140,15 @@ BurgerBuilder.propTypes = {
     push: PropTypes.func.isRequired
   }).isRequired,
   fetchIngredients: PropTypes.func.isRequired,
-  fetchIngredientPrices: PropTypes.func.isRequired
+  fetchIngredientPrices: PropTypes.func.isRequired,
+  error: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   ingredients: state.burger.ingredients,
   ingredientPrices: state.burger.ingredientPrices,
-  totalPrice: state.burger.totalPrice
+  totalPrice: state.burger.totalPrice,
+  error: state.burger.error
 });
 
 const mapDispatchToProps = dispatch => ({

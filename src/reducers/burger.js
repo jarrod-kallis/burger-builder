@@ -3,7 +3,8 @@ import {
   REMOVE_INGREDIENT,
   INGREDIENTS_RECEIVED,
   INGREDIENT_PRICES_RECEIVED,
-  INGREDIENTS_RECEIVED_FAILED
+  INGREDIENTS_RECEIVED_FAILED,
+  INGREDIENT_PRICES_RECEIVED_FAILED
 } from '../actions/types';
 
 const BASE_PRICE = 4;
@@ -12,7 +13,7 @@ const initialState = {
   ingredients: {},
   ingredientPrices: null,
   totalPrice: BASE_PRICE, // Base price of burger
-  error: ''
+  error: false
 };
 
 export default (state = initialState, action) => {
@@ -25,12 +26,17 @@ export default (state = initialState, action) => {
     case INGREDIENTS_RECEIVED_FAILED:
       return {
         ...state,
-        error: action.error
+        error: true
       };
     case INGREDIENT_PRICES_RECEIVED:
       return {
         ...state,
         ingredientPrices: action.ingredientPrices
+      };
+    case INGREDIENT_PRICES_RECEIVED_FAILED:
+      return {
+        ...state,
+        error: true
       };
     case ADD_INGREDIENT:
       return {
