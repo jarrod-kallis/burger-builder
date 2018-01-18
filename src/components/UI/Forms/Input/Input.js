@@ -63,14 +63,20 @@ class Input extends React.Component {
           {elementConfig.label}
         </label>
         {inputElement}
-        {!valid && touched && <p className={cssClasses.ErrorMessage}>Please enter a valid {elementConfig.placeholder.toLowerCase()}</p>}
+        {!valid &&
+          touched && (
+            <p className={cssClasses.ErrorMessage}>
+              Please enter a valid {elementConfig.placeholder.toLowerCase()}
+            </p>
+          )}
       </div>
     );
   }
 }
 
 Input.defaultProps = {
-  options: []
+  options: [],
+  value: ''
 };
 
 Input.propTypes = {
@@ -87,7 +93,7 @@ Input.propTypes = {
       }).isRequired
     )
   }).isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   valid: PropTypes.bool.isRequired
 };
 

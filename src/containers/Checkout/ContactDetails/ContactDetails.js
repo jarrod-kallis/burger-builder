@@ -121,34 +121,57 @@ class ContactDetails extends React.Component {
     onChangeHandler,
     validation = {},
     { ...args }
-  ) => ({
-    elementType,
-    elementConfig: {
-      type,
-      name,
-      label,
-      placeholder: label,
-      onChange: onChangeHandler,
-      ...args
-    },
-    value: '',
-    validation,
-    valid: false
-  });
+  ) => {
+    let value = '';
+
+    if (this.props.currentOrder) {
+      if (
+        this.props.currentOrder.customer &&
+        this.props.currentOrder.customer[name]
+      ) {
+        value = this.props.currentOrder.customer[name];
+      } else if (this.props.currentOrder[name]) {
+        value = this.props.currentOrder[name];
+      }
+    }
+
+    return {
+      elementType,
+      elementConfig: {
+        type,
+        name,
+        label,
+        placeholder: label,
+        onChange: onChangeHandler,
+        ...args
+      },
+      value,
+      validation,
+      valid: this.isValid(value, validation)
+    };
+  };
 
   isValid = (value, rules) => {
     let isValid = true;
 
     if (rules) {
-      if (rules.required && !value.trim()) {
+      if (rules.required && (!value || !value.trim())) {
         isValid = false;
       }
 
-      if (isValid && rules.minLength && value.length < rules.minLength) {
+      if (
+        isValid &&
+        rules.minLength &&
+        (!value || value.length < rules.minLength)
+      ) {
         isValid = false;
       }
 
-      if (isValid && rules.maxLength && value.length > rules.maxLength) {
+      if (
+        isValid &&
+        rules.maxLength &&
+        (!value || value.length > rules.maxLength)
+      ) {
         isValid = false;
       }
 
@@ -212,8 +235,17 @@ class ContactDetails extends React.Component {
   }
 }
 
+ContactDetails.defaultProps = {
+  currentOrder: null
+};
+
 ContactDetails.propTypes = {
-  onOrderClicked: PropTypes.func.isRequired
+  onOrderClicked: PropTypes.func.isRequired,
+  currentOrder: PropTypes.shape({
+    customer: PropTypes.shape({
+      name: PropTypes.string
+    })
+  }).isRequired
 };
 
 export default ContactDetails;

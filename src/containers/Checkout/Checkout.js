@@ -3,23 +3,19 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import axios from '../../axios-orders';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactDetails from './ContactDetails/ContactDetails';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Auxillary from '../../hoc/Auxillary/Auxillary';
+import { placeOrder } from '../../actions/order';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-orders';
 
 class Checkout extends React.Component {
   constructor(props) {
     super(props);
 
-    // const params = new URLSearchParams(this.props.location.search);
-    // const ingredients = JSON.parse(params.get('ingredients'));
-    // const price = +params.get('price');
-
     this.state = {
-      // ingredients,
-      // price,
       loading: false
     };
   }
@@ -56,12 +52,6 @@ class Checkout extends React.Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice
-      // customer: {
-      //   name: contactDetails.name,
-      //   address: contactDetails.address,
-      //   email: contactDetails.email
-      // },
-      // deliveryMethod: 'fastest'
     };
 
     const orderWithCustomerDetails = {
@@ -73,8 +63,8 @@ class Checkout extends React.Component {
       loading: true
     });
 
-    axios
-      .post('/orders.json', orderWithCustomerDetails)
+    this.props
+      .placeOrder(orderWithCustomerDetails)
       .then(() => {
         this.setState({
           loading: false
@@ -90,9 +80,7 @@ class Checkout extends React.Component {
   };
 
   render() {
-    // const params = new URLSearchParams(this.props.location.search);
-    // const ingredients = JSON.parse(params.get('ingredients'));
-    const { ingredients } = this.props;
+    const { ingredients, currentOrder } = this.props;
 
     return (
       <div>
@@ -108,7 +96,10 @@ class Checkout extends React.Component {
             <Route
               path={`${this.props.match.url}/contact-details`}
               render={() => (
-                <ContactDetails onOrderClicked={this.placeOrderHandler} />
+                <ContactDetails
+                  onOrderClicked={this.placeOrderHandler}
+                  currentOrder={currentOrder}
+                />
               )}
             />
           </Auxillary>
@@ -117,6 +108,11 @@ class Checkout extends React.Component {
     );
   }
 }
+
+Checkout.defaultProps = {
+  // customer: null,
+  currentOrder: null
+};
 
 Checkout.propTypes = {
   ingredients: PropTypes.shape().isRequired,
@@ -130,12 +126,23 @@ Checkout.propTypes = {
   }).isRequired,
   match: PropTypes.shape({
     url: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  placeOrder: PropTypes.func.isRequired,
+  currentOrder: PropTypes.shape()
+  // customer: PropTypes.shape()
 };
 
 const mapStateToProps = state => ({
   ingredients: state.burger.ingredients,
-  totalPrice: state.burger.totalPrice
+  totalPrice: state.burger.totalPrice,
+  currentOrder: state.order.currentOrder
+  // customer: state.order.currentOrder.customer
 });
 
-export default connect(mapStateToProps)(Checkout);
+const mapDispatchToProps = dispatch => ({
+  placeOrder: order => dispatch(placeOrder(order))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withErrorHandler(Checkout, axios)
+);

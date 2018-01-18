@@ -155,8 +155,8 @@ const mapDispatchToProps = dispatch => ({
   addIngredient: ingredientType => dispatch(addIngredient(ingredientType)),
   removeIngredient: ingredientType =>
     dispatch(removeIngredient(ingredientType)),
-  fetchIngredients: () => fetchIngredients()(dispatch),
-  fetchIngredientPrices: () => fetchIngredientPrices()(dispatch)
+  fetchIngredients: () => dispatch(fetchIngredients()), // (dispatch),
+  fetchIngredientPrices: () => dispatch(fetchIngredientPrices()) // (dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

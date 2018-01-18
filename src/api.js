@@ -26,5 +26,9 @@ export default {
       get: () =>
         axios.get('/ingredient-prices.json').then(response => response.data)
     }
+  },
+  order: {
+    place: order =>
+      axios.post('/orders.jso', order).then(response => response.data.name)
   }
 };
