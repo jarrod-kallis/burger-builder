@@ -1,7 +1,8 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactDetails from './ContactDetails/ContactDetails';
@@ -82,30 +83,29 @@ class Checkout extends React.Component {
   render() {
     const { ingredients, currentOrder } = this.props;
 
-    return (
-      <div>
-        {this.state.loading ? (
-          <Spinner />
-        ) : (
-          <Auxillary>
-            <CheckoutSummary
-              ingredients={ingredients}
-              cancelPurchase={this.cancelPurchaseHandler}
-              continuePurchase={this.continuePurchaseHandler}
-            />
-            <Route
-              path={`${this.props.match.url}/contact-details`}
-              render={() => (
-                <ContactDetails
-                  onOrderClicked={this.placeOrderHandler}
-                  currentOrder={currentOrder}
-                />
-              )}
-            />
-          </Auxillary>
-        )}
-      </div>
-    );
+    const checkoutSummary =
+      _.isEmpty(ingredients) === false ? (
+        <Auxillary>
+          <CheckoutSummary
+            ingredients={ingredients}
+            cancelPurchase={this.cancelPurchaseHandler}
+            continuePurchase={this.continuePurchaseHandler}
+          />
+          <Route
+            path={`${this.props.match.url}/contact-details`}
+            render={() => (
+              <ContactDetails
+                onOrderClicked={this.placeOrderHandler}
+                currentOrder={currentOrder}
+              />
+            )}
+          />
+        </Auxillary>
+      ) : (
+        <Redirect to="/" />
+      );
+
+    return <div>{this.state.loading ? <Spinner /> : checkoutSummary}</div>;
   }
 }
 
