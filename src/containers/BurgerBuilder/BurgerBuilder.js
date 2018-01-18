@@ -24,14 +24,14 @@ class BurgerBuilder extends React.Component {
   };
 
   componentDidMount() {
-    this.props
-      .fetchIngredients()
+    Promise.all([
+      this.props.fetchIngredients(),
+      this.props.fetchIngredientPrices()
+    ])
       .then(() => {
-        this.props.fetchIngredientPrices().then(() => {
-          this.setState({
-            ...this.state,
-            loading: false
-          });
+        this.setState({
+          ...this.state,
+          loading: false
         });
       })
       .catch(() => {
