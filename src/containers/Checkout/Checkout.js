@@ -110,7 +110,6 @@ class Checkout extends React.Component {
 }
 
 Checkout.defaultProps = {
-  // customer: null,
   currentOrder: null
 };
 
@@ -129,14 +128,12 @@ Checkout.propTypes = {
   }).isRequired,
   placeOrder: PropTypes.func.isRequired,
   currentOrder: PropTypes.shape()
-  // customer: PropTypes.shape()
 };
 
 const mapStateToProps = state => ({
   ingredients: state.burger.ingredients,
   totalPrice: state.burger.totalPrice,
   currentOrder: state.order.currentOrder
-  // customer: state.order.currentOrder.customer
 });
 
 const mapDispatchToProps = dispatch => ({

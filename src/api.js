@@ -29,6 +29,6 @@ export default {
   },
   order: {
     place: order =>
-      axios.post('/orders.jso', order).then(response => response.data.name)
+      axios.post('/orders.json', order).then(response => response.data.name)
   }
 };

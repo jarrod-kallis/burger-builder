@@ -20,7 +20,9 @@ export default (state = initialState, action) => {
     case PLACE_ORDER_SUCCESSFUL:
       return {
         ...state,
-        orders: Object.assign({}, state.orders, { [action.id]: action.order })
+        orders: Object.assign({}, state.orders, {
+          [action.id]: { id: action.id, ...action.order }
+        })
       };
     case PLACE_ORDER_FAILED:
       return {
