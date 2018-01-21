@@ -4,7 +4,8 @@ import {
   INGREDIENTS_RECEIVED,
   INGREDIENTS_RECEIVED_FAILED,
   INGREDIENT_PRICES_RECEIVED,
-  INGREDIENT_PRICES_RECEIVED_FAILED
+  INGREDIENT_PRICES_RECEIVED_FAILED,
+  RESET_BURGER
 } from './types';
 import api from '../api';
 
@@ -49,6 +50,8 @@ export const addIngredient = ingredientType => ingredientAdded(ingredientType);
 
 export const removeIngredient = ingredientType =>
   ingredientRemoved(ingredientType);
+
+export const reset = () => ({ type: RESET_BURGER });
 
 // Pattern for asynchronous actions
 export const fetchIngredients = () => dispatch =>

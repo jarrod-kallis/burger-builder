@@ -1,4 +1,5 @@
 import {
+  RESET_BURGER,
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   INGREDIENTS_RECEIVED,
@@ -18,6 +19,11 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case RESET_BURGER:
+      return {
+        ...state,
+        totalPrice: BASE_PRICE
+      };
     case INGREDIENTS_RECEIVED:
       return {
         ...state,

@@ -11,6 +11,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import {
+  reset,
   addIngredient,
   removeIngredient,
   fetchIngredients,
@@ -25,6 +26,7 @@ class BurgerBuilder extends React.Component {
 
   componentDidMount() {
     Promise.all([
+      this.props.reset(),
       this.props.fetchIngredients(),
       this.props.fetchIngredientPrices()
     ])
@@ -139,6 +141,7 @@ BurgerBuilder.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
+  reset: PropTypes.func.isRequired,
   fetchIngredients: PropTypes.func.isRequired,
   fetchIngredientPrices: PropTypes.func.isRequired,
   error: PropTypes.bool.isRequired
@@ -156,7 +159,8 @@ const mapDispatchToProps = dispatch => ({
   removeIngredient: ingredientType =>
     dispatch(removeIngredient(ingredientType)),
   fetchIngredients: () => dispatch(fetchIngredients()), // (dispatch),
-  fetchIngredientPrices: () => dispatch(fetchIngredientPrices()) // (dispatch)
+  fetchIngredientPrices: () => dispatch(fetchIngredientPrices()), // (dispatch)
+  reset: () => dispatch(reset())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
