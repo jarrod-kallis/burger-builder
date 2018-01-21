@@ -1,7 +1,8 @@
 import {
   PLACE_ORDER_SUCCESSFUL,
   PLACE_ORDER_FAILED,
-  PLACE_ORDER
+  PLACE_ORDER,
+  ORDERS_RECEIVED
 } from '../actions/types';
 
 const initialState = {
@@ -29,6 +30,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         error: true
+      };
+    case ORDERS_RECEIVED:
+      return {
+        ...state,
+        orders: action.orders
       };
     default:
       return state;

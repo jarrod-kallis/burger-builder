@@ -30,5 +30,8 @@ export default {
   order: {
     place: order =>
       axios.post('/orders.json', order).then(response => response.data.name)
+  },
+  orders: {
+    get: () => axios.get('/orders.json').then(response => response.data)
   }
 };

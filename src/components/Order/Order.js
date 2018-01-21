@@ -35,7 +35,7 @@ const Order = props => {
         ingredients={props.ingredients}
       />
       <p style={{ margin: 0 }}>
-        <strong>Price: ${props.price}</strong>
+        <strong>Price: ${props.price.toFixed(2)}</strong>
       </p>
       <p style={{ margin: '10px 0' }}>
         <strong>Delivery Method: {toTitleCase(props.deliveryMethod)}</strong>
