@@ -10,6 +10,7 @@ const Items = () => (
       Burger Builder
     </Item>
     <Item link="/orders">Orders</Item>
+    <Item link="/authorisation">Authenticate</Item>
   </ul>
 );
 
