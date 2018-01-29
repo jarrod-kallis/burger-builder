@@ -15,12 +15,15 @@ const Button = props => (
 
 Button.defaultProps = {
   disabled: false
-}
+};
 
 Button.propTypes = {
   btnType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([PropTypes.string.isRequired]).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]).isRequired,
   disabled: PropTypes.bool
 };
 

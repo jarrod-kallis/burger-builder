@@ -15,7 +15,13 @@ class Input extends React.Component {
   };
 
   render() {
-    const { valid, elementType, elementConfig, value } = this.props;
+    const {
+      valid,
+      elementType,
+      elementConfig,
+      value,
+      errorMessage
+    } = this.props;
     const { touched } = this.state;
 
     let inputElement = null;
@@ -66,7 +72,8 @@ class Input extends React.Component {
         {!valid &&
           touched && (
             <p className={cssClasses.ErrorMessage}>
-              Please enter a valid {elementConfig.placeholder.toLowerCase()}
+              {errorMessage ||
+                `Please enter a valid ${elementConfig.placeholder.toLowerCase()}`}
             </p>
           )}
       </div>
@@ -76,7 +83,8 @@ class Input extends React.Component {
 
 Input.defaultProps = {
   options: [],
-  value: ''
+  value: '',
+  errorMessage: ''
 };
 
 Input.propTypes = {
@@ -94,7 +102,8 @@ Input.propTypes = {
     )
   }).isRequired,
   value: PropTypes.string,
-  valid: PropTypes.bool.isRequired
+  valid: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string
 };
 
 export default Input;

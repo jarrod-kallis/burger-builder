@@ -10,12 +10,13 @@ const SuccessButton = props => (
 );
 
 SuccessButton.defaultProps = {
-  disabled: false
-}
+  disabled: false,
+  onClick: () => {}
+};
 
 SuccessButton.propTypes = {
   children: PropTypes.oneOfType([PropTypes.string.isRequired]).isRequired,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   disabled: PropTypes.bool
 };
 

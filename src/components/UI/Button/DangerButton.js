@@ -3,15 +3,22 @@ import PropTypes from 'prop-types';
 
 import Button from './Button';
 
-const SuccessButton = props => (
+const DangerButton = props => (
   <Button btnType="Danger" onClick={props.onClick}>
     {props.children}
   </Button>
 );
 
-SuccessButton.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.string.isRequired]).isRequired,
-  onClick: PropTypes.func.isRequired
+DangerButton.defaultProps = {
+  onClick: () => {}
 };
 
-export default SuccessButton;
+DangerButton.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]).isRequired,
+  onClick: PropTypes.func
+};
+
+export default DangerButton;

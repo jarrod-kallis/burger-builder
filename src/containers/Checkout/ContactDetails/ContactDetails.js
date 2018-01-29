@@ -66,6 +66,7 @@ class ContactDetails extends React.Component {
           'Delivery Method',
           this.onChange,
           { required: true },
+          '',
           {
             options: [
               { value: '', displayValue: 'Please select...' },
@@ -148,6 +149,8 @@ class ContactDetails extends React.Component {
       onChangeHandler,
       value,
       validation,
+      '',
+      isValid,
       { ...args }
     );
   };

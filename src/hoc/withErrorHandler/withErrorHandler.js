@@ -2,6 +2,7 @@ import React from 'react';
 
 import Modal from '../../components/UI/Modal/Modal';
 import Auxillary from '../Auxillary/Auxillary';
+import parseError from '../../utils/errors/parseError';
 
 const withErrorHandler = (WrappedComponent, axiosInstance) =>
   class extends React.Component {
@@ -52,7 +53,7 @@ const withErrorHandler = (WrappedComponent, axiosInstance) =>
       return (
         <Auxillary>
           <Modal show={!!error} closeModal={this.closeErrorHandler}>
-            <p>{error ? error.message : null}</p>
+            <p>{error ? parseError(error) : null}</p>
           </Modal>
           <WrappedComponent {...this.props} />
         </Auxillary>

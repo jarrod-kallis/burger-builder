@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Input from '../../components/UI/Forms/Input/Input';
-import { isValid } from '../validation';
 
 // Create the state properties for the input
 export const createElement = (
@@ -12,6 +11,8 @@ export const createElement = (
   onChangeHandler,
   value,
   validation = {},
+  errorMessage,
+  isValidFunction,
   { ...args }
 ) => ({
   elementType,
@@ -25,7 +26,8 @@ export const createElement = (
   },
   value,
   validation,
-  valid: isValid(value, validation)
+  valid: isValidFunction(value, validation),
+  errorMessage
 });
 
 // Create the HTML Input DOM element
@@ -39,6 +41,7 @@ export const renderInputComponents = state => {
           elementConfig={state[key].elementConfig}
           value={state[key].value}
           valid={state[key].valid}
+          errorMessage={state[key].errorMessage}
         />
       );
     } else {

@@ -13,7 +13,7 @@ const App = () => (
       <Route path="/" exact component={BurgerBuilder} />
       <Route path="/checkout" component={Checkout} />
       <Route path="/orders" component={Orders} />
-      <Route path="/authorisation" component={Authorisation} />
+      <Route path="/signup" component={Authorisation} />
       <Route
         render={() => <h1 style={{ textAlign: 'center' }}>Route Not Found</h1>}
       />
