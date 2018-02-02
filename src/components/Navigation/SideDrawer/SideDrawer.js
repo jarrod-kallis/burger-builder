@@ -8,7 +8,7 @@ import NavigationItems from '../Items/Items';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 import Auxillary from '../../../hoc/Auxillary/Auxillary';
 
-const SideDrawer = ({ show, close }) => (
+const SideDrawer = ({ isAuthenticated, show, close }) => (
   <Auxillary>
     <Backdrop show={show} click={close} />
     <div
@@ -21,13 +21,14 @@ const SideDrawer = ({ show, close }) => (
         <Logo />
       </div>
       <nav>
-        <NavigationItems />
+        <NavigationItems isAuthenticated={isAuthenticated} />
       </nav>
     </div>
   </Auxillary>
 );
 
 SideDrawer.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   show: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired
 };

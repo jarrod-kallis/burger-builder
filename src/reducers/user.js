@@ -3,7 +3,8 @@ import {
   USER_SIGNUP_FAILED,
   USER_LOGIN_START,
   USER_LOGIN_SUCCESSFUL,
-  USER_LOGIN_FAILED
+  USER_LOGIN_FAILED,
+  USER_LOGOUT
 } from '../actions/types';
 
 const initialState = {
@@ -37,6 +38,8 @@ export default (state = initialState, action) => {
         error: action.error,
         loading: false
       };
+    case USER_LOGOUT:
+      return initialState;
     default:
       return state;
   }

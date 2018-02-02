@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import cssClasses from './Authorisation.css';
 
@@ -137,11 +138,12 @@ class Authorisation extends React.Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { isAuthenticated, loading } = this.props;
     const caption = this.state.isSignUp ? 'Sign Up' : 'Login';
 
     return (
       <div className={cssClasses.Authorisation}>
+        {isAuthenticated && <Redirect to="/" />}
         <h4>{caption}</h4>
         {loading ? (
           <Spinner />
@@ -167,10 +169,12 @@ class Authorisation extends React.Component {
 Authorisation.propTypes = {
   signUp: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
+  isAuthenticated: !!state.user.user.idToken,
   loading: state.user.loading
 });
 

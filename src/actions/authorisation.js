@@ -4,7 +4,8 @@ import {
   USER_SIGNUP_FAILED,
   USER_LOGIN_SUCCESSFUL,
   USER_LOGIN_START,
-  USER_LOGIN_FAILED
+  USER_LOGIN_FAILED,
+  USER_LOGOUT
 } from './types';
 
 const userSignUpStart = () => ({
@@ -30,9 +31,13 @@ const userLoginFailed = error => ({
   error
 });
 
+export const userLogout = () => ({
+  type: USER_LOGOUT
+});
+
 export const signUp = credentials => dispatch => {
   dispatch(userSignUpStart());
-  api.user
+  return api.user
     .signUp(credentials)
     .then(user => dispatch(userLoginSuccessful(user)))
     .catch(error => dispatch(userSignUpFailed(error)));
@@ -40,7 +45,7 @@ export const signUp = credentials => dispatch => {
 
 export const login = credentials => dispatch => {
   dispatch(userLoginStart());
-  api.user
+  return api.user
     .login(credentials)
     .then(user => dispatch(userLoginSuccessful(user)))
     .catch(error => dispatch(userLoginFailed(error)));
