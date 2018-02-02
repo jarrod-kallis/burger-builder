@@ -66,7 +66,6 @@ class ContactDetails extends React.Component {
           'Delivery Method',
           this.onChange,
           { required: true },
-          '',
           {
             options: [
               { value: '', displayValue: 'Please select...' },
