@@ -54,12 +54,15 @@ export default {
     }
   },
   order: {
-    place: order =>
+    place: (order, token) =>
       axiosOrders
-        .post('/orders.json', order)
+        .post(`/orders.json?auth=${token}`, order)
         .then(response => response.data.name)
   },
   orders: {
-    get: () => axiosOrders.get('/orders.json').then(response => response.data)
+    get: token =>
+      axiosOrders
+        .get(`/orders.json?auth=${token}`)
+        .then(response => response.data)
   }
 };
