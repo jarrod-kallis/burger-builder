@@ -35,20 +35,30 @@ export const userLogout = () => ({
   type: USER_LOGOUT
 });
 
+const checkTokenExpiration = expirationTimeInSeconds => dispatch => {
+  setTimeout(() => {
+    dispatch(userLogout());
+  }, expirationTimeInSeconds * 1000);
+};
+
 export const signUp = credentials => dispatch => {
   dispatch(userSignUpStart());
-  return api.user
+  api.user
     .signUp(credentials)
-    .then(user => dispatch(userLoginSuccessful(user)))
+    .then(user => {
+      dispatch(userLoginSuccessful(user));
+      dispatch(checkTokenExpiration(+user.expiresIn));
+    })
     .catch(error => dispatch(userSignUpFailed(error)));
 };
 
 export const login = credentials => dispatch => {
   dispatch(userLoginStart());
-  return api.user
+  api.user
     .login(credentials)
-    .then(user => dispatch(userLoginSuccessful(user)))
+    .then(user => {
+      dispatch(userLoginSuccessful(user));
+      dispatch(checkTokenExpiration(+user.expiresIn));
+    })
     .catch(error => dispatch(userLoginFailed(error)));
 };
-
-export default login;

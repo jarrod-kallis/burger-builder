@@ -8,6 +8,8 @@ export default error => {
     ERROR_CODES[error.response.data.error.message]
   ) {
     errorMessage = ERROR_CODES[error.response.data.error.message];
+  } else if (error.response.data.error) {
+    errorMessage = error.response.data.error;
   }
 
   return errorMessage;
