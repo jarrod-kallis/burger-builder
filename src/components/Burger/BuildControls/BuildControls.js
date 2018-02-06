@@ -22,6 +22,7 @@ class BuildControls extends React.Component {
 
   render() {
     const {
+      isAuthenticated,
       onAdd,
       onRemove,
       disabledRemoveButtonInfo,
@@ -50,7 +51,7 @@ class BuildControls extends React.Component {
           disabled={!allowedToPurchase}
           onClick={onPlaceOrder}
         >
-          Place Order
+          {isAuthenticated ? 'Place Order' : 'Sign Up To Order'}
         </button>
       </div>
     );
@@ -62,6 +63,7 @@ BuildControls.defaultProps = {
 };
 
 BuildControls.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   onPlaceOrder: PropTypes.func.isRequired,

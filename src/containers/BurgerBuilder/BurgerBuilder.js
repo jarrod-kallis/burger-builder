@@ -45,9 +45,13 @@ class BurgerBuilder extends React.Component {
   }
 
   onPlaceOrderHandler = () => {
-    this.setState({
-      isPurchasing: true
-    });
+    if (this.props.isAuthenticated) {
+      this.setState({
+        isPurchasing: true
+      });
+    } else {
+      this.props.history.push('/signup');
+    }
   };
 
   cancelPurchaseHandler = () => {
@@ -115,6 +119,7 @@ class BurgerBuilder extends React.Component {
           <Auxillary>
             <Burger ingredients={this.props.ingredients} />
             <BuildControls
+              isAuthenticated={this.props.isAuthenticated}
               /* If any error occurrs then don't supply the ingredients (this is so we can still show a decent home page) */
               ingredients={this.props.error ? {} : this.props.ingredients}
               onAdd={this.props.addIngredient}
@@ -134,6 +139,7 @@ class BurgerBuilder extends React.Component {
 }
 
 BurgerBuilder.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
   ingredients: PropTypes.shape().isRequired,
   totalPrice: PropTypes.number.isRequired,
   addIngredient: PropTypes.func.isRequired,
@@ -148,6 +154,7 @@ BurgerBuilder.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  isAuthenticated: !!state.user.user.idToken,
   ingredients: state.burger.ingredients,
   ingredientPrices: state.burger.ingredientPrices,
   totalPrice: state.burger.totalPrice,
