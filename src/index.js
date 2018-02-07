@@ -11,11 +11,30 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import rootReducer from './rootReducer';
+import {
+  getAuthorisationInfo,
+  getTokenExpirationDate
+} from './utils/localStorageUtil';
+import {
+  userLoginSuccessful,
+  checkTokenExpiration,
+  userLogout
+} from './actions/authorisation';
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
+
+const currentUser = getAuthorisationInfo();
+const expirationDate = getTokenExpirationDate();
+
+if (currentUser && expirationDate && expirationDate > new Date()) {
+  store.dispatch(userLoginSuccessful(currentUser));
+  store.dispatch(checkTokenExpiration(+currentUser.expiresIn));
+} else {
+  store.dispatch(userLogout());
+}
 
 ReactDOM.render(
   <Provider store={store}>

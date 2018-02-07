@@ -8,6 +8,7 @@ import {
   USER_LOGOUT,
   SET_REDIRECT_URL
 } from './types';
+import { setAuthorisationInfo } from '../utils/localStorageUtil';
 
 const userSignUpStart = () => ({
   type: USER_SIGNUP_START
@@ -22,7 +23,7 @@ const userLoginStart = () => ({
   type: USER_LOGIN_START
 });
 
-const userLoginSuccessful = user => ({
+export const userLoginSuccessful = user => ({
   type: USER_LOGIN_SUCCESSFUL,
   user
 });
@@ -32,11 +33,14 @@ const userLoginFailed = error => ({
   error
 });
 
-export const userLogout = () => ({
-  type: USER_LOGOUT
-});
+export const userLogout = () => {
+  setAuthorisationInfo();
+  return {
+    type: USER_LOGOUT
+  };
+};
 
-const checkTokenExpiration = expirationTimeInSeconds => dispatch => {
+export const checkTokenExpiration = expirationTimeInSeconds => dispatch => {
   setTimeout(() => {
     dispatch(userLogout());
   }, expirationTimeInSeconds * 1000);
@@ -49,6 +53,7 @@ export const signUp = credentials => dispatch => {
     .then(user => {
       dispatch(userLoginSuccessful(user));
       dispatch(checkTokenExpiration(+user.expiresIn));
+      setAuthorisationInfo(user);
     })
     .catch(error => dispatch(userSignUpFailed(error)));
 };
@@ -60,6 +65,7 @@ export const login = credentials => dispatch => {
     .then(user => {
       dispatch(userLoginSuccessful(user));
       dispatch(checkTokenExpiration(+user.expiresIn));
+      setAuthorisationInfo(user);
     })
     .catch(error => dispatch(userLoginFailed(error)));
 };
