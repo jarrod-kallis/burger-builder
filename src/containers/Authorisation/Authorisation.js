@@ -9,7 +9,7 @@ import { isValid } from '../../utils/validation';
 import { renderInputComponents, createElement } from '../../utils/form/render';
 import SuccessButton from '../../components/UI/Button/SuccessButton';
 import { isValidForm } from '../../utils/form/validation';
-import { signUp, login } from '../../actions/authorisation';
+import { signUp, login, setRedirectUrl } from '../../actions/authorisation';
 import DangerButton from '../../components/UI/Button/DangerButton';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Auxillary from '../../hoc/Auxillary/Auxillary';
@@ -61,6 +61,12 @@ class Authorisation extends React.Component {
       },
       isSignUp: true
     };
+  }
+
+  componentDidMount() {
+    if (!this.props.isBuildingBurger && this.props.redirectUrl !== '/') {
+      this.props.setRedirectUrl('/');
+    }
   }
 
   onChange = event => {
@@ -138,22 +144,12 @@ class Authorisation extends React.Component {
   };
 
   render() {
-    const { isAuthenticated, loading, isBuildingBurger } = this.props;
+    const { isAuthenticated, loading } = this.props;
     const caption = this.state.isSignUp ? 'Sign Up' : 'Login';
-
-    let authorisationRedirect = null;
-
-    if (isAuthenticated) {
-      authorisationRedirect = <Redirect to="/" />;
-
-      if (isBuildingBurger) {
-        authorisationRedirect = <Redirect to="/checkout" />;
-      }
-    }
 
     return (
       <div className={cssClasses.Authorisation}>
-        {authorisationRedirect}
+        {isAuthenticated && <Redirect to={this.props.redirectUrl} />}
 
         <h4>{caption}</h4>
         {loading ? (
@@ -177,23 +173,31 @@ class Authorisation extends React.Component {
   }
 }
 
+Authorisation.defaultProps = {
+  redirectUrl: '/'
+};
+
 Authorisation.propTypes = {
   signUp: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  isBuildingBurger: PropTypes.bool.isRequired
+  isBuildingBurger: PropTypes.bool.isRequired,
+  redirectUrl: PropTypes.string,
+  setRedirectUrl: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: !!state.user.user.idToken,
   loading: state.user.loading,
-  isBuildingBurger: state.burger.isBuildingBurger
+  isBuildingBurger: state.burger.isBuildingBurger,
+  redirectUrl: state.user.redirectUrl
 });
 
 const mapDispatchToProps = dispatch => ({
   signUp: (email, password) => dispatch(signUp({ email, password })),
-  login: (email, password) => dispatch(login({ email, password }))
+  login: (email, password) => dispatch(login({ email, password })),
+  setRedirectUrl: url => dispatch(setRedirectUrl(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

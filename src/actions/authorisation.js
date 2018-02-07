@@ -5,7 +5,8 @@ import {
   USER_LOGIN_SUCCESSFUL,
   USER_LOGIN_START,
   USER_LOGIN_FAILED,
-  USER_LOGOUT
+  USER_LOGOUT,
+  SET_REDIRECT_URL
 } from './types';
 
 const userSignUpStart = () => ({
@@ -62,3 +63,8 @@ export const login = credentials => dispatch => {
     })
     .catch(error => dispatch(userLoginFailed(error)));
 };
+
+export const setRedirectUrl = url => ({
+  type: SET_REDIRECT_URL,
+  url
+});

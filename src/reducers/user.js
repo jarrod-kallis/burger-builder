@@ -4,13 +4,15 @@ import {
   USER_LOGIN_START,
   USER_LOGIN_SUCCESSFUL,
   USER_LOGIN_FAILED,
-  USER_LOGOUT
+  USER_LOGOUT,
+  SET_REDIRECT_URL
 } from '../actions/types';
 
 const initialState = {
   user: {},
   error: '',
-  loading: false
+  loading: false,
+  redirectUrl: '/'
 };
 
 export default (state = initialState, action) => {
@@ -40,6 +42,11 @@ export default (state = initialState, action) => {
       };
     case USER_LOGOUT:
       return initialState;
+    case SET_REDIRECT_URL:
+      return {
+        ...state,
+        redirectUrl: action.url
+      };
     default:
       return state;
   }

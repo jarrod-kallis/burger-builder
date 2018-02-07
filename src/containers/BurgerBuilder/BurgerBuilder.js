@@ -17,6 +17,7 @@ import {
   fetchIngredients,
   fetchIngredientPrices
 } from '../../actions/burger';
+import { setRedirectUrl } from '../../actions/authorisation';
 
 class BurgerBuilder extends React.Component {
   state = {
@@ -50,6 +51,7 @@ class BurgerBuilder extends React.Component {
         isPurchasing: true
       });
     } else {
+      this.props.setRedirectUrl('/checkout');
       this.props.history.push('/signup');
     }
   };
@@ -150,7 +152,8 @@ BurgerBuilder.propTypes = {
   reset: PropTypes.func.isRequired,
   fetchIngredients: PropTypes.func.isRequired,
   fetchIngredientPrices: PropTypes.func.isRequired,
-  error: PropTypes.bool.isRequired
+  error: PropTypes.bool.isRequired,
+  setRedirectUrl: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -167,7 +170,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(removeIngredient(ingredientType)),
   fetchIngredients: () => dispatch(fetchIngredients()), // (dispatch),
   fetchIngredientPrices: () => dispatch(fetchIngredientPrices()), // (dispatch)
-  reset: () => dispatch(reset())
+  reset: () => dispatch(reset()),
+  setRedirectUrl: url => dispatch(setRedirectUrl(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
