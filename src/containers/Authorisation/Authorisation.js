@@ -138,12 +138,23 @@ class Authorisation extends React.Component {
   };
 
   render() {
-    const { isAuthenticated, loading } = this.props;
+    const { isAuthenticated, loading, isBuildingBurger } = this.props;
     const caption = this.state.isSignUp ? 'Sign Up' : 'Login';
+
+    let authorisationRedirect = null;
+
+    if (isAuthenticated) {
+      authorisationRedirect = <Redirect to="/" />;
+
+      if (isBuildingBurger) {
+        authorisationRedirect = <Redirect to="/checkout" />;
+      }
+    }
 
     return (
       <div className={cssClasses.Authorisation}>
-        {isAuthenticated && <Redirect to="/" />}
+        {authorisationRedirect}
+
         <h4>{caption}</h4>
         {loading ? (
           <Spinner />
@@ -170,12 +181,14 @@ Authorisation.propTypes = {
   signUp: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  isBuildingBurger: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: !!state.user.user.idToken,
-  loading: state.user.loading
+  loading: state.user.loading,
+  isBuildingBurger: state.burger.isBuildingBurger
 });
 
 const mapDispatchToProps = dispatch => ({

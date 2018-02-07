@@ -14,7 +14,8 @@ const initialState = {
   ingredients: {},
   ingredientPrices: null,
   totalPrice: BASE_PRICE, // Base price of burger
-  error: false
+  error: false,
+  isBuildingBurger: false
 };
 
 export default (state = initialState, action) => {
@@ -22,7 +23,8 @@ export default (state = initialState, action) => {
     case RESET_BURGER:
       return {
         ...state,
-        totalPrice: BASE_PRICE
+        totalPrice: BASE_PRICE,
+        isBuildingBurger: false
       };
     case INGREDIENTS_RECEIVED:
       return {
@@ -52,7 +54,8 @@ export default (state = initialState, action) => {
           [action.ingredientType]: state.ingredients[action.ingredientType] + 1
         },
         totalPrice:
-          state.totalPrice + state.ingredientPrices[action.ingredientType]
+          state.totalPrice + state.ingredientPrices[action.ingredientType],
+        isBuildingBurger: true
       };
     case REMOVE_INGREDIENT:
       return {
@@ -62,7 +65,8 @@ export default (state = initialState, action) => {
           [action.ingredientType]: state.ingredients[action.ingredientType] - 1
         },
         totalPrice:
-          state.totalPrice - state.ingredientPrices[action.ingredientType]
+          state.totalPrice - state.ingredientPrices[action.ingredientType],
+        isBuildingBurger: true
       };
     default:
       return state;
