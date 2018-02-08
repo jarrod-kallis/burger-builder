@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
@@ -14,13 +14,14 @@ const App = ({ isAuthenticated }) => (
   <Layout>
     <Switch>
       <Route path="/" exact component={BurgerBuilder} />
-      <Route path="/checkout" component={Checkout} />
+      {isAuthenticated && <Route path="/checkout" component={Checkout} />}
       {isAuthenticated && <Route path="/orders" component={Orders} />}
       <Route path="/signup" component={Authorisation} />
-      <Route path="/logout" component={Logout} />
-      <Route
+      {isAuthenticated && <Route path="/logout" component={Logout} />}
+      {/* <Route
         render={() => <h1 style={{ textAlign: 'center' }}>Route Not Found</h1>}
-      />
+      /> */}
+      <Redirect to="/" />
     </Switch>
   </Layout>
 );
