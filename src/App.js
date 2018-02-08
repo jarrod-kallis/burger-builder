@@ -5,10 +5,20 @@ import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout from './containers/Checkout/Checkout';
-import Orders from './containers/Orders/Orders';
-import Authorisation from './containers/Authorisation/Authorisation';
-import Logout from './containers/Authorisation/Logout/Logout';
+// import Checkout from './containers/Checkout/Checkout';
+// import Orders from './containers/Orders/Orders';
+// import Authorisation from './containers/Authorisation/Authorisation';
+// import Logout from './containers/Authorisation/Logout/Logout';
+import asyncComponent from './hoc/asyncComponent/asyncComponent';
+
+const Orders = asyncComponent(() => import('./containers/Orders/Orders'));
+const Checkout = asyncComponent(() => import('./containers/Checkout/Checkout'));
+const Authorisation = asyncComponent(() =>
+  import('./containers/Authorisation/Authorisation')
+);
+const Logout = asyncComponent(() =>
+  import('./containers/Authorisation/Logout/Logout')
+);
 
 const App = ({ isAuthenticated }) => (
   <Layout>
