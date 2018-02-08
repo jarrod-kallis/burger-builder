@@ -6,7 +6,9 @@ import {
   USER_LOGIN_START,
   USER_LOGIN_FAILED,
   USER_LOGOUT,
-  SET_REDIRECT_URL
+  SET_REDIRECT_URL,
+  TOKEN_REFRESH_START,
+  TOKEN_REFRESH_FAILED
 } from './types';
 import { setAuthorisationInfo } from '../utils/localStorageUtil';
 
@@ -33,6 +35,15 @@ const userLoginFailed = error => ({
   error
 });
 
+const tokenRefreshStart = () => ({
+  type: TOKEN_REFRESH_START
+});
+
+const tokenRefreshFailed = error => ({
+  type: TOKEN_REFRESH_FAILED,
+  error
+});
+
 export const userLogout = () => {
   setAuthorisationInfo();
   return {
@@ -40,9 +51,23 @@ export const userLogout = () => {
   };
 };
 
+export const refreshToken = () => (dispatch, getState) => {
+  dispatch(tokenRefreshStart());
+  api.user
+    .refreshToken(getState().user.user)
+    .then(user => {
+      dispatch(userLoginSuccessful(user));
+      // eslint-disable-next-line
+      dispatch(checkTokenExpiration(+user.expiresIn));
+      setAuthorisationInfo(user);
+    })
+    .catch(error => dispatch(tokenRefreshFailed(error)));
+};
+
 export const checkTokenExpiration = expirationTimeInSeconds => dispatch => {
   setTimeout(() => {
-    dispatch(userLogout());
+    // dispatch(userLogout());
+    dispatch(refreshToken());
   }, expirationTimeInSeconds * 1000);
 };
 

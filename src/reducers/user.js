@@ -5,7 +5,8 @@ import {
   USER_LOGIN_SUCCESSFUL,
   USER_LOGIN_FAILED,
   USER_LOGOUT,
-  SET_REDIRECT_URL
+  SET_REDIRECT_URL,
+  TOKEN_REFRESH_FAILED
 } from '../actions/types';
 
 const initialState = {
@@ -34,6 +35,7 @@ export default (state = initialState, action) => {
       };
     case USER_SIGNUP_FAILED:
     case USER_LOGIN_FAILED:
+    case TOKEN_REFRESH_FAILED:
       return {
         ...state,
         user: {},

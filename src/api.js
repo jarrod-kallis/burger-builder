@@ -23,6 +23,25 @@ export default {
         .then(response => response.data)
         .catch(error => {
           throw error.response.data.error.message;
+        }),
+    refreshToken: user =>
+      axiosAuthorisation
+        .post(
+          `https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`,
+          {
+            grant_type: 'refresh_token',
+            refresh_token: user.refreshToken
+          }
+        )
+        .then(response => response.data)
+        .then(updatedUser => ({
+          ...user,
+          idToken: updatedUser.id_token,
+          expiresIn: updatedUser.expires_in,
+          refreshToken: updatedUser.refresh_token
+        }))
+        .catch(error => {
+          throw error.response.data.error.message;
         })
   },
   ingredients: {
