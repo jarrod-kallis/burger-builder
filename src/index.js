@@ -21,10 +21,11 @@ import {
   userLogout
 } from './actions/authorisation';
 
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+// Only allow Redux dev tools if in development mode
+const compose =
+  process.env.NODE_ENV === 'development' ? composeWithDevTools : f => f;
+
+const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
 
 const currentUser = getAuthorisationInfo();
 const expirationDate = getTokenExpirationDate();
