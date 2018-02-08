@@ -10,6 +10,7 @@ const Item = props => (
       exact={props.exact}
       to={props.link}
       activeClassName={cssClasses.active}
+      onClick={props.click}
     >
       {props.children}
     </NavLink>
@@ -17,13 +18,15 @@ const Item = props => (
 );
 
 Item.defaultProps = {
-  exact: false
+  exact: false,
+  click: () => {}
 };
 
 Item.propTypes = {
   exact: PropTypes.bool,
   link: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired
+  children: PropTypes.string.isRequired,
+  click: PropTypes.func
 };
 
 export default Item;

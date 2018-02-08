@@ -21,7 +21,7 @@ const SideDrawer = ({ isAuthenticated, show, close }) => (
         <Logo />
       </div>
       <nav>
-        <NavigationItems isAuthenticated={isAuthenticated} />
+        <NavigationItems isAuthenticated={isAuthenticated} click={close} />
       </nav>
     </div>
   </Auxillary>

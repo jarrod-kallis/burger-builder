@@ -5,22 +5,35 @@ import cssClasses from './Items.css';
 
 import Item from './Item/Item';
 
-const Items = ({ isAuthenticated }) => (
+const Items = ({ isAuthenticated, click }) => (
   <ul className={cssClasses.Items}>
-    <Item link="/" exact>
+    <Item link="/" exact click={click}>
       Burger Builder
     </Item>
-    {isAuthenticated ? <Item link="/orders">Orders</Item> : null}
     {isAuthenticated ? (
-      <Item link="/logout">Logout</Item>
+      <Item link="/orders" click={click}>
+        Orders
+      </Item>
+    ) : null}
+    {isAuthenticated ? (
+      <Item link="/logout" click={click}>
+        Logout
+      </Item>
     ) : (
-      <Item link="/signup">Sign Up / Login</Item>
+      <Item link="/signup" click={click}>
+        Sign Up / Login
+      </Item>
     )}
   </ul>
 );
 
+Items.defaultProps = {
+  click: () => {}
+};
+
 Items.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  click: PropTypes.func
 };
 
 export default Items;
