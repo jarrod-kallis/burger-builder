@@ -24,7 +24,7 @@ const ordersReceived = orders => ({
 export const placeOrder = order => (dispatch, getState) => {
   dispatch({ type: PLACE_ORDER, order });
   return api.order
-    .place(order, getState().user.user.idToken)
+    .place(order, getState().user.user)
     .then(id => dispatch(placeOrderSuccessful(id, order)))
     .catch(error => {
       dispatch(placeOrderFailed());
@@ -33,7 +33,7 @@ export const placeOrder = order => (dispatch, getState) => {
 };
 
 export const get = () => (dispatch, getState) =>
-  api.orders.get(getState().user.user.idToken).then(orders => {
+  api.orders.get(getState().user.user).then(orders => {
     dispatch(ordersReceived(orders));
   });
 

@@ -34,7 +34,7 @@ export default (state = initialState, action) => {
     case ORDERS_RECEIVED:
       return {
         ...state,
-        orders: action.orders
+        orders: action.orders || {}
       };
     default:
       return state;

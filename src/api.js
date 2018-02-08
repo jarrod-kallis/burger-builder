@@ -73,15 +73,23 @@ export default {
     }
   },
   order: {
-    place: (order, token) =>
+    place: (order, user) =>
       axiosOrders
-        .post(`/orders.json?auth=${token}`, order)
+        .post(`/orders.json?auth=${user.idToken}`, {
+          ...order,
+          customer: { userId: user.localId, ...order.customer }
+        })
         .then(response => response.data.name)
   },
   orders: {
-    get: token =>
+    get: user =>
+      // 'equalTo' query parameter refers to the field used in the 'orderBy' query parameter iow userId
       axiosOrders
-        .get(`/orders.json?auth=${token}`)
+        .get(
+          `/orders.json?auth=${
+            user.idToken
+          }&orderBy="customer/userId"&equalTo="${user.localId}"`
+        )
         .then(response => response.data)
   }
 };
