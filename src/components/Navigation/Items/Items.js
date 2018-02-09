@@ -28,11 +28,12 @@ const Items = ({ isAuthenticated, click }) => (
 );
 
 Items.defaultProps = {
+  isAuthenticated: false,
   click: () => {}
 };
 
 Items.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool,
   click: PropTypes.func
 };
 
