@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
+/* eslint-disable import/no-named-as-default */
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 // import Checkout from './containers/Checkout/Checkout';
 // import Orders from './containers/Orders/Orders';
