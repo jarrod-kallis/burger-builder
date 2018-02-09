@@ -19,7 +19,7 @@ import {
 } from '../../actions/burger';
 import { setRedirectUrl } from '../../actions/authorisation';
 
-class BurgerBuilder extends React.Component {
+export class BurgerBuilder extends React.Component {
   state = {
     isPurchasing: false, // Has the user clicked the 'Place Order' button
     loading: true
@@ -140,8 +140,13 @@ class BurgerBuilder extends React.Component {
   }
 }
 
+BurgerBuilder.defaultProps = {
+  isAuthenticated: false,
+  error: null
+};
+
 BurgerBuilder.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool,
   ingredients: PropTypes.shape().isRequired,
   totalPrice: PropTypes.number.isRequired,
   addIngredient: PropTypes.func.isRequired,
@@ -152,7 +157,7 @@ BurgerBuilder.propTypes = {
   reset: PropTypes.func.isRequired,
   fetchIngredients: PropTypes.func.isRequired,
   fetchIngredientPrices: PropTypes.func.isRequired,
-  error: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
   setRedirectUrl: PropTypes.func.isRequired
 };
 

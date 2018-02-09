@@ -29,8 +29,13 @@ describe('<Navigation.Items />', () => {
 
     const items = wrapper
       .find(Item)
-      .map(item => item.children())
-      .filter(child => child.text() === 'Logout');
+      .map(item => item)
+      .filter(
+        item =>
+          item.props().link === '/logout' && item.props().children === 'Logout'
+      );
+    // .map(item => item.children())
+    // .filter(child => child.text() === 'Logout');
 
     expect(items).toHaveLength(1);
   });
