@@ -10,15 +10,8 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { get as getOrders } from '../../actions/order';
 
 class Orders extends React.Component {
-  state = {
-    loading: true
-  };
-
   componentDidMount() {
-    this.props
-      .getOrders()
-      .then(() => this.setState({ loading: false }))
-      .catch(() => this.setState({ loading: false }));
+    this.props.getOrders();
   }
 
   render() {
@@ -29,7 +22,7 @@ class Orders extends React.Component {
 
     return (
       <Auxillary>
-        {this.state.loading ? (
+        {this.props.loading ? (
           <Spinner />
         ) : (
           <div>
@@ -49,7 +42,8 @@ class Orders extends React.Component {
 }
 
 Orders.defaultProps = {
-  orders: {}
+  orders: {},
+  loading: true
 };
 
 Orders.propTypes = {
@@ -58,11 +52,13 @@ Orders.propTypes = {
     price: PropTypes.number,
     deliveryMethod: PropTypes.string
   }),
+  loading: PropTypes.bool,
   getOrders: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  orders: state.order.orders
+  orders: state.order.orders,
+  loading: state.order.loading
 });
 
 export default connect(mapStateToProps, { getOrders })(

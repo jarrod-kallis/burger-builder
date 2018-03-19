@@ -10,14 +10,20 @@ class BuildControls extends React.Component {
   constructor(props) {
     super(props);
 
-    const controls = Object.keys(this.props.ingredients).map(ingredientKey => ({
+    this.state = {
+      controls: []
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const controls = Object.keys(nextProps.ingredients).map(ingredientKey => ({
       type: ingredientKey,
       label: toTitleCase(ingredientKey)
     }));
 
-    this.state = {
+    this.setState({
       controls
-    };
+    });
   }
 
   render() {

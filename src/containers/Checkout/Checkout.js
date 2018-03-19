@@ -13,14 +13,6 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 
 class Checkout extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: false
-    };
-  }
-
   cancelPurchaseHandler = () => {
     this.props.history.goBack();
   };
@@ -60,24 +52,7 @@ class Checkout extends React.Component {
       ...this.buildOrderObject(contactDetails)
     };
 
-    this.setState({
-      loading: true
-    });
-
-    this.props
-      .placeOrder(orderWithCustomerDetails)
-      .then(() => {
-        this.setState({
-          loading: false
-        });
-
-        this.props.history.replace('/');
-      })
-      .catch(() => {
-        this.setState({
-          loading: false
-        });
-      });
+    this.props.placeOrder(orderWithCustomerDetails);
   };
 
   render() {
@@ -105,12 +80,13 @@ class Checkout extends React.Component {
         <Redirect to="/" />
       );
 
-    return <div>{this.state.loading ? <Spinner /> : checkoutSummary}</div>;
+    return <div>{this.props.loading ? <Spinner /> : checkoutSummary}</div>;
   }
 }
 
 Checkout.defaultProps = {
-  currentOrder: null
+  currentOrder: null,
+  loading: false
 };
 
 Checkout.propTypes = {
@@ -127,13 +103,15 @@ Checkout.propTypes = {
     url: PropTypes.string.isRequired
   }).isRequired,
   placeOrder: PropTypes.func.isRequired,
-  currentOrder: PropTypes.shape()
+  currentOrder: PropTypes.shape(),
+  loading: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
   ingredients: state.burger.ingredients,
   totalPrice: state.burger.totalPrice,
-  currentOrder: state.order.currentOrder
+  currentOrder: state.order.currentOrder,
+  loading: state.order.loading
 });
 
 const mapDispatchToProps = dispatch => ({

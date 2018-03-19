@@ -1,40 +1,38 @@
-import api from '../api';
 import {
   PLACE_ORDER_SUCCESSFUL,
   PLACE_ORDER_FAILED,
-  PLACE_ORDER,
-  ORDERS_RECEIVED
+  PLACE_ORDER_START,
+  GET_ORDERS_START,
+  GET_ORDERS_FAILED,
+  GET_ORDERS_SUCCESSFUL
 } from './types';
 
-const placeOrderSuccessful = (id, order) => ({
+export const placeOrderSuccessful = (id, order) => ({
   type: PLACE_ORDER_SUCCESSFUL,
   id,
   order
 });
 
-const placeOrderFailed = () => ({
+export const placeOrderFailed = () => ({
   type: PLACE_ORDER_FAILED
 });
 
-const ordersReceived = orders => ({
-  type: ORDERS_RECEIVED,
+export const getOrdersSuccessful = orders => ({
+  type: GET_ORDERS_SUCCESSFUL,
   orders
 });
 
-export const placeOrder = order => (dispatch, getState) => {
-  dispatch({ type: PLACE_ORDER, order });
-  return api.order
-    .place(order, getState().user.user)
-    .then(id => dispatch(placeOrderSuccessful(id, order)))
-    .catch(error => {
-      dispatch(placeOrderFailed());
-      throw error;
-    });
-};
+export const getOrdersFailed = () => ({
+  type: GET_ORDERS_FAILED
+});
 
-export const get = () => (dispatch, getState) =>
-  api.orders.get(getState().user.user).then(orders => {
-    dispatch(ordersReceived(orders));
-  });
+export const placeOrder = order => ({
+  type: PLACE_ORDER_START,
+  order
+});
+
+export const get = () => ({
+  type: GET_ORDERS_START
+});
 
 export default placeOrder;

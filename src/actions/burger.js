@@ -5,9 +5,10 @@ import {
   INGREDIENTS_RECEIVED_FAILED,
   INGREDIENT_PRICES_RECEIVED,
   INGREDIENT_PRICES_RECEIVED_FAILED,
-  RESET_BURGER
+  RESET_BURGER,
+  FETCH_INGREDIENTS,
+  FETCH_INGREDIENT_PRICES
 } from './types';
-import api from '../api';
 
 const ingredientAdded = ingredientType => ({
   type: ADD_INGREDIENT,
@@ -19,21 +20,21 @@ const ingredientRemoved = ingredientType => ({
   ingredientType
 });
 
-const ingredientsReceived = ingredients => ({
+export const ingredientsReceived = ingredients => ({
   type: INGREDIENTS_RECEIVED,
   ingredients
 });
 
-const ingredientsReceivedFailed = () => ({
+export const ingredientsReceivedFailed = () => ({
   type: INGREDIENTS_RECEIVED_FAILED
 });
 
-const ingredientPricesReceived = ingredientPrices => ({
+export const ingredientPricesReceived = ingredientPrices => ({
   type: INGREDIENT_PRICES_RECEIVED,
   ingredientPrices
 });
 
-const ingredientPricesReceivedFailed = () => ({
+export const ingredientPricesReceivedFailed = () => ({
   type: INGREDIENT_PRICES_RECEIVED_FAILED
 });
 
@@ -54,16 +55,16 @@ export const removeIngredient = ingredientType =>
 export const reset = () => ({ type: RESET_BURGER });
 
 // Pattern for asynchronous actions
-export const fetchIngredients = () => dispatch =>
-  api.ingredients
-    .get()
-    .then(ingredients => dispatch(ingredientsReceived(ingredients)))
-    .catch(() => dispatch(ingredientsReceivedFailed()));
+// export const fetchIngredients = () => dispatch =>
+//   api.ingredients
+//     .get()
+//     .then(ingredients => dispatch(ingredientsReceived(ingredients)))
+//     .catch(() => dispatch(ingredientsReceivedFailed()));
 
-export const fetchIngredientPrices = () => dispatch =>
-  api.ingredients.prices
-    .get()
-    .then(ingredientPrices =>
-      dispatch(ingredientPricesReceived(ingredientPrices))
-    )
-    .catch(() => dispatch(ingredientPricesReceivedFailed()));
+export const fetchIngredients = () => ({
+  type: FETCH_INGREDIENTS
+});
+
+export const fetchIngredientPrices = () => ({
+  type: FETCH_INGREDIENT_PRICES
+});
