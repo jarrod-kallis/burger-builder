@@ -39,7 +39,7 @@
   top: -260%;
   border-radius: 40%;
   transform: rotate(60deg);
-  box-shadow: inset -1px 2px #c9c9c9;
+  box-shadow: inset -1px -3px #c9c9c9;
 }
 
 .Seeds1:before {
@@ -51,7 +51,7 @@
   left: 180%;
   top: -50%;
   border-radius: 40%;
-  transform: rotate(60deg);
+  transform: rotate(45deg);
   box-shadow: inset -1px -3px #c9c9c9;
 }
 
@@ -64,7 +64,7 @@
   top: 50%;
   border-radius: 40%;
   transform: rotate(10deg);
-  box-shadow: inset -3px 0 #c9c9c9;
+  box-shadow: inset -1px -3px #c9c9c9;
 }
 
 .Seeds2:before {
@@ -77,7 +77,7 @@
   top: -130%;
   border-radius: 40%;
   transform: rotate(90deg);
-  box-shadow: inset 1px 3px #c9c9c9;
+  box-shadow: inset -2px 3px #c9c9c9;
 }
 
 .Meat {
